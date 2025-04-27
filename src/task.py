@@ -59,11 +59,9 @@ def federatedTrain(cfg: CfgNode, model: nn.Module, data_loader: DataLoader, val_
      
     if cfg.SOLVER.USE_SCHEDULER:
         schedulers = [torch.optim.lr_scheduler.StepLR(optimizer,
-                                                      step_size=int(
-                                                          cfg.SOLVER.ITER/10),
+                                                      step_size=1,#int(cfg.SOLVER.ITER/10),
                                                       last_epoch=start_epoch-1,
                                                       gamma=0.7) for optimizer in model.optimizers]
-    if cfg.SOLVER.USE_SCHEDULER:
         [scheduler.step() for scheduler in schedulers]
 
     with tqdm(range(start_epoch, cfg.SOLVER.ITER)) as pbar:
