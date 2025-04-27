@@ -49,9 +49,6 @@ def main() -> None:
             return server_app.server_fn(context, cfg)
         return server_fn_with_cfg
 
-    print(cfg)
-    print(args, unknown)
-
     if args.mode == "train":
         train(cfg)
     elif args.mode == "test":
