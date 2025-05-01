@@ -53,14 +53,14 @@ def server_fn(context: Context, cfg: CfgNode) -> ServerAppComponents:
    # Create the FedAvg strategy
     params = get_parameters(Net(cfg))
     strategy = FedAvg(
-        fraction_fit=0.3,
+        fraction_fit=0.5,
         fraction_evaluate=0.3,
-        min_fit_clients=3,
+        min_fit_clients=5,
         min_evaluate_clients=3,
         min_available_clients=NUM_PARTITIONS,
         initial_parameters=ndarrays_to_parameters(params),
         evaluate_fn=evaluate,  # Pass the evaluation function
     )
     # Configure the server for 3 rounds of training
-    config = ServerConfig(num_rounds=3)
+    config = ServerConfig(num_rounds=5)
     return ServerAppComponents(strategy=strategy, config=config)

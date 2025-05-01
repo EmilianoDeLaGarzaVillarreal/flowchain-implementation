@@ -7,7 +7,6 @@ from copy import deepcopy
 from tqdm import tqdm
 from collections import OrderedDict
 
-from utils import load_config
 from data.unified_loader import unified_loader
 from models.build_model import Build_Model
 from metrics.build_metrics import Build_Metrics

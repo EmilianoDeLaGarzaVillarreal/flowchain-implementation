@@ -20,4 +20,3 @@ def parse_args():
 def get_cfg() -> CfgNode:
     args, unknown = parse_args()
     return load_config(args, unknown)
-

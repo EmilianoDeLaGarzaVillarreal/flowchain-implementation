@@ -26,8 +26,8 @@ def load_config(args: argparse.Namespace, unknown) -> CfgNode:
     else:
         raise FileNotFoundError
 
-    if cfg_.LOAD_TUNED and args.mode != "tune":
-        cfg_ = load_tuned(args, cfg_)
+    # if cfg_.LOAD_TUNED and args.mode != "tune":
+    #     cfg_ = load_tuned(args, cfg_)
     cfg_.freeze()
 
     print(f"output dirname: {cfg_.OUTPUT_DIR}")
