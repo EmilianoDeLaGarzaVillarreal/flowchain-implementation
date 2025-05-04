@@ -10,18 +10,18 @@ from torch import Tensor
 from pathlib import Path
 
 
-def load_config(args: argparse.Namespace, unknown) -> CfgNode:
+def load_config(args: argparse.Namespace, unknown=None) -> CfgNode:
     from default_params import _C as cfg
+
     os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu
 
     cfg_ = cfg.clone()
-    #I DID THIS BECAUSE THE MODE IS CHANGING IN THE MIDDLE OF THE RUN, I WILL TRY TO SOLVE THAT
+    # I DID THIS BECAUSE THE MODE IS CHANGING IN THE MIDDLE OF THE RUN, I WILL TRY TO SOLVE THAT
     if os.path.isfile(args.config_file):
         conf = args.config_file
         print(f"Configuration file loaded from {conf}.")
         cfg_.merge_from_file(conf)
-        cfg_.OUTPUT_DIR = os.path.join(cfg_.OUTPUT_DIR,
-                                       os.path.splitext(conf)[0])
+        cfg_.OUTPUT_DIR = os.path.join(cfg_.OUTPUT_DIR, os.path.splitext(conf)[0])
 
     else:
         raise FileNotFoundError
@@ -33,14 +33,14 @@ def load_config(args: argparse.Namespace, unknown) -> CfgNode:
     print(f"output dirname: {cfg_.OUTPUT_DIR}")
     os.makedirs(cfg_.OUTPUT_DIR, exist_ok=True)
     if os.path.isfile(args.config_file):
-        shutil.copy2(args.config_file, os.path.join(
-            cfg_.OUTPUT_DIR, 'config.yaml'))
+        shutil.copy2(args.config_file, os.path.join(cfg_.OUTPUT_DIR, "config.yaml"))
 
     return cfg_
 
 
 def load_tuned(args: argparse.Namespace, cfg: CfgNode) -> CfgNode:
     import optuna
+
     study_path = os.path.join(cfg.OUTPUT_DIR, "optuna.db")
     if not os.path.exists(study_path):
         return cfg
@@ -83,7 +83,8 @@ class DynamicBufferModule(ABC, torch.nn.Module):
             return attribute
 
         raise ValueError(
-            f"Attribute with name '{attribute_name}' is not a torch Tensor")
+            f"Attribute with name '{attribute_name}' is not a torch Tensor"
+        )
 
     def _load_from_state_dict(self, state_dict: dict, prefix: str, *args):
         """Resizes the local buffers to match those stored in the state dict.
@@ -93,14 +94,16 @@ class DynamicBufferModule(ABC, torch.nn.Module):
           prefix (str): Prefix of the weight file.
           *args:
         """
-        persistent_buffers = {k: v for k, v in self._buffers.items(
-        ) if k not in self._non_persistent_buffers_set}
-        local_buffers = {k: v for k,
-                         v in persistent_buffers.items() if v is not None}
+        persistent_buffers = {
+            k: v
+            for k, v in self._buffers.items()
+            if k not in self._non_persistent_buffers_set
+        }
+        local_buffers = {k: v for k, v in persistent_buffers.items() if v is not None}
 
         for param in local_buffers.keys():
             for key in state_dict.keys():
-                if key.startswith(prefix) and key[len(prefix):].split(".")[0] == param:
+                if key.startswith(prefix) and key[len(prefix) :].split(".")[0] == param:
                     if not local_buffers[param].shape == state_dict[key].shape:
                         attribute = self.get_tensor_attribute(param)
                         attribute.resize_(state_dict[key].shape)
@@ -121,9 +124,9 @@ class GaussianKDE(DynamicBufferModule):
         self.register_buffer("dataset", Tensor())
         self.register_buffer("norm", Tensor())
 
-        #self.bw_transform = Tensor()
-        #self.dataset = Tensor()
-        #self.norm = Tensor()
+        # self.bw_transform = Tensor()
+        # self.dataset = Tensor()
+        # self.norm = Tensor()
 
         if dataset is not None:
             self.fit(dataset)
@@ -182,6 +185,5 @@ class GaussianKDE(DynamicBufferModule):
             Output covariance matrix.
         """
         mean = torch.mean(tensor, dim=1, keepdim=True)
-        cov = torch.matmul(tensor - mean, (tensor - mean).T) / \
-            (tensor.size(1) - 1)
+        cov = torch.matmul(tensor - mean, (tensor - mean).T) / (tensor.size(1) - 1)
         return cov

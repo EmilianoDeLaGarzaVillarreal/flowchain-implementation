@@ -12,10 +12,7 @@ from torch.distributions import Normal
 from data.TP.preprocessing import restore
 from utils import optimizer_to_cuda
 
-from models.TP.TFCondARFlow import (
-    FlowSequential, LinearMaskedCoupling, BatchNorm,
-    MADE
-)
+from models.TP.TFCondARFlow import FlowSequential, LinearMaskedCoupling, BatchNorm, MADE
 
 
 class fastpredNF_TP(nn.Module):
@@ -29,21 +26,19 @@ class fastpredNF_TP(nn.Module):
 
         self.pred_state = cfg.DATA.TP.PRED_STATE
 
-        self.input_size = 2 * len(cfg.DATA.TP.STATE.lstrip('state_'))
-        self.output_size = 2 * len(cfg.DATA.TP.PRED_STATE.lstrip('state_'))
+        self.input_size = 2 * len(cfg.DATA.TP.STATE.lstrip("state_"))
+        self.output_size = 2 * len(cfg.DATA.TP.PRED_STATE.lstrip("state_"))
         conditioning_length = cfg.MODEL.FLOW.CONDITIONING_LENGTH
 
-        encoder_dict = {
-            "transformer": TF_encoder,
-            "trajectron": Trajectron_encoder
-        }
+        encoder_dict = {"transformer": TF_encoder,
+                        "trajectron": Trajectron_encoder}
 
         self.encoder = encoder_dict[cfg.MODEL.ENCODER_TYPE](
             cfg=cfg,
             input_size=self.input_size,
             output_size=conditioning_length,
             obs_len=self.obs_len,
-            pred_len=self.pred_len
+            pred_len=self.pred_len,
         )
 
         model_dict = {
@@ -52,7 +47,7 @@ class fastpredNF_TP(nn.Module):
             "fastpredNF_separate_cond": fastpredNF_separate_cond,
             "fastpredNF_CIF": fastpredNF_CIF,
             "fastpredNF_CIF_separate": fastpredNF_CIF_separate,
-            "fastpredNF_CIF_separate_cond": fastpredNF_CIF_separate_cond
+            "fastpredNF_CIF_separate_cond": fastpredNF_CIF_separate_cond,
         }
 
         n_blocks = cfg.MODEL.FLOW.N_BLOCKS
@@ -66,22 +61,26 @@ class fastpredNF_TP(nn.Module):
             hidden_size=hidden_size,
             cond_label_size=conditioning_length,
             flow_architecture=cfg.MODEL.FLOW.ARCHITECTURE,
-            pred_len=self.pred_len
+            pred_len=self.pred_len,
         )
 
         self.dequantize = cfg.SOLVER.DEQUANTIZE
 
         decay_parameters = [
-            n for n, p in self.named_parameters() if 'bias' not in n]
+            n for n, p in self.named_parameters() if "bias" not in n]
         optimizer_grouped_parameters = [
             {
-                "params": [p for n, p in self.named_parameters() if n in decay_parameters],
+                "params": [
+                    p for n, p in self.named_parameters() if n in decay_parameters
+                ],
                 "weight_decay": cfg.SOLVER.WEIGHT_DECAY,
             },
             {
-                "params": [p for n, p in self.named_parameters() if n not in decay_parameters],
+                "params": [
+                    p for n, p in self.named_parameters() if n not in decay_parameters
+                ],
                 "weight_decay": 0.0,
-            }
+            },
         ]
 
         self.optimizer = optim.Adam(
@@ -103,18 +102,22 @@ class fastpredNF_TP(nn.Module):
 
         sample_num = 10000
 
-        base_pos = self.get_base_pos(
-            data_dict)[:, None].expand(-1, sample_num, -1).clone()
+        base_pos = (
+            self.get_base_pos(data_dict)[
+                :, None].expand(-1, sample_num, -1).clone()
+        )
         dist_args = dist_args[:, None].expand(-1, sample_num, -1, -1)
         sampled_seq, log_prob, seq_ldjs, base_log_prob = self.flow.sample_with_log_prob(
-            base_pos, cond=dist_args)
+            base_pos, cond=dist_args
+        )
 
         # for update
         self.ldjs_tmp = seq_ldjs
         self.base_prob_normalizer_tmp = base_log_prob.exp().sum(dim=1)
 
         data_dict[("prob_st", 0)] = torch.cat(
-            [sampled_seq, log_prob[..., None]], dim=-1)
+            [sampled_seq, log_prob[..., None]], dim=-1
+        )
 
         data_dict[("pred_st", 0)] = sampled_seq[:, -1]  # sample one trajectory
 
@@ -125,37 +128,50 @@ class fastpredNF_TP(nn.Module):
 
         sample_num = 100
 
-        base_pos = self.get_base_pos(
-            data_dict)[:, None].expand(-1, sample_num, -1).clone()
+        base_pos = (
+            self.get_base_pos(data_dict)[
+                :, None].expand(-1, sample_num, -1).clone()
+        )
         dist_args = dist_args[:, None].expand(-1, sample_num, -1, -1)
         sampled_seq, log_prob, seq_ldjs, base_log_prob = self.flow.sample_with_log_prob(
-            base_pos, cond=dist_args)
+            base_pos, cond=dist_args
+        )
 
         data_dict[("pred_st", 0)] = sampled_seq[:, -1]
-        if torch.sum(torch.isnan(data_dict[('pred_st', 0)])):
-            data_dict[("pred_st", 0)] = torch.where(torch.isnan(data_dict[("pred_st", 0)]),
-                                                    data_dict['obs_st'][:, 0, None, 2:4].expand(
-                                                        data_dict[("pred_st", 0)].size()),
-                                                    data_dict[('pred_st', 0)])
+        if torch.sum(torch.isnan(data_dict[("pred_st", 0)])):
+            data_dict[("pred_st", 0)] = torch.where(
+                torch.isnan(data_dict[("pred_st", 0)]),
+                data_dict["obs_st"][:, 0, None, 2:4].expand(
+                    data_dict[("pred_st", 0)].size()
+                ),
+                data_dict[("pred_st", 0)],
+            )
         return data_dict
 
     def predict_from_new_obs(self, data_dict: Dict, time_step: int) -> Dict:
-        assert 0 < time_step and time_step < self.pred_len, f"time_step for update need to be 0~{self.pred_len-1}, got {time_step}"
-        assert ("prob_st", 0) in data_dict.keys(
-        ), "Initial prediction needed before updating"
+        assert (
+            0 < time_step and time_step < self.pred_len
+        ), f"time_step for update need to be 0~{self.pred_len - 1}, got {time_step}"
+        assert (
+            "prob_st",
+            0,
+        ) in data_dict.keys(), "Initial prediction needed before updating"
 
-        data_dict[("prob_st", time_step)] = data_dict[(
-            "prob_st", 0)][:, :, time_step:].clone()
+        data_dict[("prob_st", time_step)] = data_dict[("prob_st", 0)][
+            :, :, time_step:
+        ].clone()
 
         base_log_prob = self.flow.base_dist(
-            data_dict["gt_st"][:, time_step-1], step=time_step).log_prob(data_dict[("prob_st", 0)][:, :, time_step-1, :2])
+            data_dict["gt_st"][:, time_step - 1], step=time_step
+        ).log_prob(data_dict[("prob_st", 0)][:, :, time_step - 1, :2])
         base_log_prob = torch.sum(base_log_prob, dim=-1)
         base_prob = base_log_prob.exp()
-        base_log_prob = (base_prob / base_prob.sum(dim=1) *
-                         self.base_prob_normalizer_tmp).log()
-        log_prob = base_log_prob[:, :, None] + \
-            torch.cumsum(self.ldjs_tmp[:, :, time_step:], dim=0) / torch.cumsum(
-                torch.ones_like(self.ldjs_tmp[:, :, time_step:]), dim=0)
+        base_log_prob = (
+            base_prob / base_prob.sum(dim=1) * self.base_prob_normalizer_tmp
+        ).log()
+        log_prob = base_log_prob[:, :, None] + torch.cumsum(
+            self.ldjs_tmp[:, :, time_step:], dim=0
+        ) / torch.cumsum(torch.ones_like(self.ldjs_tmp[:, :, time_step:]), dim=0)
         data_dict[("prob_st", time_step)][..., -1] = log_prob
 
         data_dict[("pred_st", time_step)] = data_dict[(
@@ -170,12 +186,22 @@ class fastpredNF_TP(nn.Module):
 
         sample_num_per_dim = 200
         batch_size = data_dict["obs_st"][-1].size()[0]
-        base_pos = self.get_base_pos(data_dict)[
-            :, None].expand(-1, sample_num_per_dim ** self.output_size, -1).clone()
+        base_pos = (
+            self.get_base_pos(data_dict)[:, None]
+            .expand(-1, sample_num_per_dim**self.output_size, -1)
+            .clone()
+        )
         dist_args = dist_args[:, None].expand(
-            -1, sample_num_per_dim ** self.output_size, -1, -1)
-        seq = torch.cartesian_prod(torch.linspace(-3, 3, steps=sample_num_per_dim),
-                                   torch.linspace(-3, 3, steps=sample_num_per_dim))[None, :, None].expand(self.pred_len, -1, batch_size, -1).cuda()
+            -1, sample_num_per_dim**self.output_size, -1, -1
+        )
+        seq = (
+            torch.cartesian_prod(
+                torch.linspace(-3, 3, steps=sample_num_per_dim),
+                torch.linspace(-3, 3, steps=sample_num_per_dim),
+            )[None, :, None]
+            .expand(self.pred_len, -1, batch_size, -1)
+            .cuda()
+        )
 
         log_prob = self.flow.log_prob_sequential(base_pos, seq, cond=dist_args)
 
@@ -186,18 +212,11 @@ class fastpredNF_TP(nn.Module):
     def update(self, data_dict: Dict) -> Dict:
         dist_args = self.encoder(data_dict)
 
-        gt = data_dict['gt_st']
+        gt = data_dict["gt_st"]
         if self.dequantize:
-            gt += torch.rand_like(data_dict['gt_st']) / 100
+            gt += torch.rand_like(data_dict["gt_st"]) / 100
 
         base_pos = self.get_base_pos(data_dict)
-
-        # 1) compute per-example log-likelihood
-        log_probs = self.flow.log_prob(base_pos, gt, dist_args)
-        avg_logp = log_probs.mean()
-
-        # 2) define NLL = –avg_logp  (this is what you minimize)
-        nll = -avg_logp
 
         loss = -self.flow.log_prob(base_pos, gt, dist_args)
         loss = loss.mean()
@@ -206,18 +225,15 @@ class fastpredNF_TP(nn.Module):
         loss.backward()
         self.optimizer.step()
 
-        return {
-            'nll': nll.item(),           # typically ≥0 or <0 if density>1
-            'avg_logp': avg_logp.item()  # increases during training
-        }
+        return {"loss": loss.mean().item()}
 
     def get_base_pos(self, data_dict: Dict) -> torch.Tensor:
         # assume x_st contains {'position', 'velocity', 'acceleration'} info
-        if self.pred_state == 'state_p':
+        if self.pred_state == "state_p":
             return data_dict["obs_st"][:, -1, :2]
-        elif self.pred_state == 'state_v':
+        elif self.pred_state == "state_v":
             return data_dict["obs_st"][:, -1, 2:4]
-        elif self.pred_state == 'state_a':
+        elif self.pred_state == "state_a":
             return data_dict["obs_st"][:, -1, 4:6]
         else:
             raise ValueError
@@ -227,9 +243,9 @@ class fastpredNF_TP(nn.Module):
             path = self.output_path / "ckpt.pt"
 
         ckpt = {
-            'epoch': epoch,
-            'state': self.state_dict(),
-            'optim_state': self.optimizer.state_dict(),
+            "epoch": epoch,
+            "state": self.state_dict(),
+            "optim_state": self.optimizer.state_dict(),
         }
 
         torch.save(ckpt, path)
@@ -245,21 +261,23 @@ class fastpredNF_TP(nn.Module):
             path = self.output_path / "ckpt.pt"
 
         ckpt = torch.load(path)
-        self.load_state_dict(ckpt['state'])
+        self.load_state_dict(ckpt["state"])
 
-        self.optimizer.load_state_dict(ckpt['optim_state'])
+        self.optimizer.load_state_dict(ckpt["optim_state"])
         optimizer_to_cuda(self.optimizer)
 
         return ckpt["epoch"]
 
 
 class TF_encoder(nn.Module):
-    def __init__(self,
-                 cfg: CfgNode,
-                 input_size: int,
-                 output_size: int,
-                 obs_len: int,
-                 pred_len: int):
+    def __init__(
+        self,
+        cfg: CfgNode,
+        input_size: int,
+        output_size: int,
+        obs_len: int,
+        pred_len: int,
+    ):
         super(TF_encoder, self).__init__()
 
         self.obs_len = obs_len
@@ -285,14 +303,15 @@ class TF_encoder(nn.Module):
             dim_feedforward=dim_feedforward_scale * d_model,
             dropout=dropout_rate,
             activation=act_type,
-            batch_first=True
+            batch_first=True,
         )
 
         self.dist_args_proj = nn.Linear(d_model, output_size)
 
         position = torch.arange(self.obs_len + self.pred_len).unsqueeze(1)
-        div_term = torch.exp(torch.arange(0, d_model, 2)
-                             * (-math.log(10000.0) / d_model))
+        div_term = torch.exp(
+            torch.arange(0, d_model, 2) * (-math.log(10000.0) / d_model)
+        )
         pe = torch.zeros(1, self.obs_len + self.pred_len, d_model)
         pe[0, :, 0::2] = torch.sin(position * div_term)
         pe[0, :, 1::2] = torch.cos(position * div_term)
@@ -301,16 +320,14 @@ class TF_encoder(nn.Module):
     def __call__(self, data_dict: Dict) -> torch.Tensor:
         enc_inputs = data_dict["obs_st"]
 
-        enc_pe = self.pe[:, :self.obs_len]
+        enc_pe = self.pe[:, : self.obs_len]
         dec_pe = self.pe[:, self.obs_len:]
 
         enc_out = self.transformer.encoder(
-            self.encoder_input(enc_inputs) + enc_pe
-        )
+            self.encoder_input(enc_inputs) + enc_pe)
 
         dec_output = self.transformer.decoder(
-            dec_pe.expand(enc_out.shape[0], -1, -1),
-            enc_out
+            dec_pe.expand(enc_out.shape[0], -1, -1), enc_out
         )
 
         dist_args = self.dist_args_proj(dec_output)
@@ -319,12 +336,14 @@ class TF_encoder(nn.Module):
 
 
 class Trajectron_encoder(nn.Module):
-    def __init__(self,
-                 cfg: CfgNode,
-                 input_size: int,
-                 output_size: int,
-                 obs_len: int,
-                 pred_len: int):
+    def __init__(
+        self,
+        cfg: CfgNode,
+        input_size: int,
+        output_size: int,
+        obs_len: int,
+        pred_len: int,
+    ):
         super(Trajectron_encoder, self).__init__()
 
         self.obs_len = obs_len
@@ -336,21 +355,21 @@ class Trajectron_encoder(nn.Module):
         from .mgcvae import MultimodalGenerativeCVAE
 
         import dill
-        env_path = Path(cfg.DATA.PATH) / cfg.DATA.TASK / \
-            "processed_data" / f"{cfg.DATA.DATASET_NAME}_train.pkl"
-        with open(env_path, 'rb') as f:
-            env = dill.load(f, encoding='latin1')
+
+        env_path = (
+            Path(cfg.DATA.PATH)
+            / cfg.DATA.TASK
+            / "processed_data"
+            / f"{cfg.DATA.DATASET_NAME}_train.pkl"
+        )
+        with open(env_path, "rb") as f:
+            env = dill.load(f, encoding="latin1")
             edge_types = env.get_edge_types()
 
-        hypers['state'] = hypers[cfg.DATA.TP.STATE]
+        hypers["state"] = hypers[cfg.DATA.TP.STATE]
 
         self.encoder = MultimodalGenerativeCVAE(
-            env,
-            'PEDESTRIAN',
-            {},
-            hypers,
-            'cuda',
-            edge_types
+            env, "PEDESTRIAN", {}, hypers, "cuda", edge_types
         )
         d_model = 256
 
@@ -378,7 +397,7 @@ class Trajectron_encoder(nn.Module):
             neighbors_edge_value,
             robot,
             map,
-            prediction_horizon
+            prediction_horizon,
         )
 
         dist_args = self.dist_args_proj(
@@ -388,52 +407,68 @@ class Trajectron_encoder(nn.Module):
 
 
 class fastpredNF(nn.Module):
-    def __init__(self,
-                 input_size: int,
-                 n_blocks: int,
-                 hidden_size: int,
-                 n_hidden: int,
-                 cond_label_size: int,
-                 **kwargs):
+    def __init__(
+        self,
+        input_size: int,
+        n_blocks: int,
+        hidden_size: int,
+        n_hidden: int,
+        cond_label_size: int,
+        **kwargs,
+    ):
         super().__init__()
 
         self.flow_dict = {
-            'realNVP': create_RealNVP_step,
-            'MAF': create_MAF_step,
+            "realNVP": create_RealNVP_step,
+            "MAF": create_MAF_step,
         }
 
-        self.build_net(n_blocks, input_size, hidden_size,
-                       n_hidden, cond_label_size, **kwargs)
-        pred_len = kwargs['pred_len']
-        self.var = nn.Parameter(torch.ones(
-            pred_len, self.input_size)/10, requires_grad=True)
+        self.build_net(
+            n_blocks, input_size, hidden_size, n_hidden, cond_label_size, **kwargs
+        )
+        pred_len = kwargs["pred_len"]
+        self.var = nn.Parameter(
+            torch.ones(pred_len, self.input_size) / 10, requires_grad=True
+        )
 
     def base_dist(self, base_pos, step=0):
         return Normal(base_pos, torch.clamp(self.var[step], min=1e-4))
 
-    def build_net(self, n_blocks, input_size, hidden_size, n_hidden, cond_label_size, **kwargs):
+    def build_net(
+        self, n_blocks, input_size, hidden_size, n_hidden, cond_label_size, **kwargs
+    ):
         self.input_size = input_size
-        flow_key = kwargs['flow_architecture']
-        self.net = self.flow_dict[flow_key](n_blocks=n_blocks,
-                                            input_size=self.input_size,
-                                            hidden_size=hidden_size,
-                                            n_hidden=n_hidden,
-                                            cond_label_size=cond_label_size)
+        flow_key = kwargs["flow_architecture"]
+        self.net = self.flow_dict[flow_key](
+            n_blocks=n_blocks,
+            input_size=self.input_size,
+            hidden_size=hidden_size,
+            n_hidden=n_hidden,
+            cond_label_size=cond_label_size,
+        )
 
     # maybe need debugging
     def forward_sequential(self, seq, cond):
         x = seq[:, -1:].detach().clone()
         seq_log_det_jacobians_cumsum = 0
-        for step in range(seq.shape[1]-1, -1, -1):
+        for step in range(seq.shape[1] - 1, -1, -1):
             x, log_det_jacobian = self.net(x, cond[:, step:])
             seq_log_det_jacobians_cumsum += log_det_jacobian
             if not step == 0:
-                x = torch.cat([seq[:, step-1][:, None], x], dim=1)
-                seq_log_det_jacobians_cumsum = torch.cat([torch.zeros(seq_log_det_jacobians_cumsum.shape[[0, 2]])[:, None],
-                                                          seq_log_det_jacobians_cumsum], dim=0)
+                x = torch.cat([seq[:, step - 1][:, None], x], dim=1)
+                seq_log_det_jacobians_cumsum = torch.cat(
+                    [
+                        torch.zeros(seq_log_det_jacobians_cumsum.shape[[0, 2]])[
+                            :, None
+                        ],
+                        seq_log_det_jacobians_cumsum,
+                    ],
+                    dim=0,
+                )
         seq_u = x
         seq_log_det_jacobians_cumsum /= torch.cumsum(
-            torch.ones_like(seq_log_det_jacobians_cumsum), dim=1)
+            torch.ones_like(seq_log_det_jacobians_cumsum), dim=1
+        )
         return seq_u, seq_log_det_jacobians_cumsum
 
     def forward_separate(self, seq, cond):
@@ -454,7 +489,8 @@ class fastpredNF(nn.Module):
         seq_log_det_jacobians_cumsum = torch.cumsum(
             seq_log_det_jacobians, dim=2)
         seq_log_det_jacobians_cumsum /= torch.cumsum(
-            torch.ones_like(seq_log_det_jacobians_cumsum), dim=2)
+            torch.ones_like(seq_log_det_jacobians_cumsum), dim=2
+        )
         return seq, seq_log_det_jacobians_cumsum, seq_log_det_jacobians
 
     def log_prob(self, base_pos, x, cond):
@@ -470,8 +506,11 @@ class fastpredNF(nn.Module):
     def log_prob_separate(self, base_pos, x, cond):
         u, seq_ldjs = self.forward_separate(x, cond)
         base_pos = torch.cat([base_pos[:, None], x[:, :-1]], dim=1)
-        base_log_prob = torch.sum(self.base_dist(
-            base_pos, step=list(range(base_pos.shape[1]))).log_prob(u), dim=-1)
+        base_log_prob = torch.sum(
+            self.base_dist(base_pos, step=list(
+                range(base_pos.shape[1]))).log_prob(u),
+            dim=-1,
+        )
         return base_log_prob + seq_ldjs
 
     def sample(self, base_pos, cond):
@@ -482,37 +521,54 @@ class fastpredNF(nn.Module):
     def sample_with_log_prob(self, base_pos, cond):
         u = self.base_dist(base_pos).sample()
         sample, seq_ldjs_cumsum, seq_ldjs = self.inverse(u, cond)
-        base_log_prob = torch.sum(self.base_dist(
-            base_pos).log_prob(u), dim=-1)[..., None]
+        base_log_prob = torch.sum(self.base_dist(base_pos).log_prob(u), dim=-1)[
+            ..., None
+        ]
         return sample, base_log_prob + seq_ldjs_cumsum, seq_ldjs, base_log_prob
 
 
 class fastpredNF_separate(fastpredNF):
-    def build_net(self, n_blocks, input_size, hidden_size, n_hidden, cond_label_size, **kwargs):
+    def build_net(
+        self, n_blocks, input_size, hidden_size, n_hidden, cond_label_size, **kwargs
+    ):
         self.input_size = input_size
-        flow_key = kwargs['flow_architecture']
-        pred_len = kwargs['pred_len']
-        self.net = nn.ModuleList([self.flow_dict[flow_key](n_blocks=n_blocks,
-                                                           input_size=self.input_size,
-                                                           hidden_size=hidden_size,
-                                                           n_hidden=n_hidden,
-                                                           cond_label_size=cond_label_size)
-                                  for _ in range(pred_len)])
+        flow_key = kwargs["flow_architecture"]
+        pred_len = kwargs["pred_len"]
+        self.net = nn.ModuleList(
+            [
+                self.flow_dict[flow_key](
+                    n_blocks=n_blocks,
+                    input_size=self.input_size,
+                    hidden_size=hidden_size,
+                    n_hidden=n_hidden,
+                    cond_label_size=cond_label_size,
+                )
+                for _ in range(pred_len)
+            ]
+        )
 
     # maybe need debugging
     def forward_sequential(self, seq, cond):
         x = seq[:, -1:].detach().clone()
         seq_log_det_jacobians_cumsum = 0
-        for step in range(seq.shape[1]-1, -1, -1):
+        for step in range(seq.shape[1] - 1, -1, -1):
             x, log_det_jacobian = self.net[step](x, cond[:, step:])
             seq_log_det_jacobians_cumsum += log_det_jacobian
             if not step == 0:
-                x = torch.cat([seq[:, step-1][:, None], x], dim=1)
-                seq_log_det_jacobians_cumsum = torch.cat([torch.zeros(seq_log_det_jacobians_cumsum.shape[[0, 2]])[:, None],
-                                                          seq_log_det_jacobians_cumsum], dim=0)
+                x = torch.cat([seq[:, step - 1][:, None], x], dim=1)
+                seq_log_det_jacobians_cumsum = torch.cat(
+                    [
+                        torch.zeros(seq_log_det_jacobians_cumsum.shape[[0, 2]])[
+                            :, None
+                        ],
+                        seq_log_det_jacobians_cumsum,
+                    ],
+                    dim=0,
+                )
         seq_u = x
         seq_log_det_jacobians_cumsum /= torch.cumsum(
-            torch.ones_like(seq_log_det_jacobians_cumsum), dim=1)
+            torch.ones_like(seq_log_det_jacobians_cumsum), dim=1
+        )
         return seq_u, seq_log_det_jacobians_cumsum
 
     def forward_separate(self, seq, cond):
@@ -538,22 +594,31 @@ class fastpredNF_separate(fastpredNF):
         seq_log_det_jacobians_cumsum = torch.cumsum(
             seq_log_det_jacobians, dim=2)
         seq_log_det_jacobians_cumsum /= torch.cumsum(
-            torch.ones_like(seq_log_det_jacobians_cumsum), dim=2)
+            torch.ones_like(seq_log_det_jacobians_cumsum), dim=2
+        )
         return seq, seq_log_det_jacobians_cumsum, seq_log_det_jacobians
 
 
 class fastpredNF_separate_cond(fastpredNF_separate):
-    def build_net(self, n_blocks, input_size, hidden_size, n_hidden, cond_label_size, **kwargs):
+    def build_net(
+        self, n_blocks, input_size, hidden_size, n_hidden, cond_label_size, **kwargs
+    ):
         self.input_size = input_size
-        flow_key = kwargs['flow_architecture']
-        pred_len = kwargs['pred_len']
+        flow_key = kwargs["flow_architecture"]
+        pred_len = kwargs["pred_len"]
         # increase cond_label_size for conditioning trajectory
-        self.net = nn.ModuleList([self.flow_dict[flow_key](n_blocks=n_blocks,
-                                                           input_size=self.input_size,
-                                                           hidden_size=hidden_size,
-                                                           n_hidden=n_hidden,
-                                                           cond_label_size=cond_label_size + i * self.input_size)
-                                  for i in range(pred_len)])
+        self.net = nn.ModuleList(
+            [
+                self.flow_dict[flow_key](
+                    n_blocks=n_blocks,
+                    input_size=self.input_size,
+                    hidden_size=hidden_size,
+                    n_hidden=n_hidden,
+                    cond_label_size=cond_label_size + i * self.input_size,
+                )
+                for i in range(pred_len)
+            ]
+        )
 
     def forward_sequential(self, seq, cond, n_step=None):
         x = seq[:, -1:].detach().clone()
@@ -564,18 +629,30 @@ class fastpredNF_separate_cond(fastpredNF_separate):
         start = len(self.net) - 1
         stop = -1 if n_step is None else start - n_step
         for step in range(start, stop, -1):
-            cond_cat = torch.cat([cond[:, step:],
-                                  seq_cond[..., :step * self.input_size].expand(-1, pred_len - step, -1)],
-                                 dim=-1)
+            cond_cat = torch.cat(
+                [
+                    cond[:, step:],
+                    seq_cond[..., : step * self.input_size].expand(
+                        -1, pred_len - step, -1
+                    ),
+                ],
+                dim=-1,
+            )
             x, log_det_jacobian = self.net[step](x, cond_cat)
             seq_log_det_jacobians_cumsum += log_det_jacobian
             if not step == 0:
-                x = torch.cat([seq[:, step-1:step], x], dim=1)
-                seq_log_det_jacobians_cumsum = torch.cat([torch.zeros_like(seq_log_det_jacobians_cumsum[:, 0:1]),
-                                                          seq_log_det_jacobians_cumsum], dim=1)
+                x = torch.cat([seq[:, step - 1: step], x], dim=1)
+                seq_log_det_jacobians_cumsum = torch.cat(
+                    [
+                        torch.zeros_like(seq_log_det_jacobians_cumsum[:, 0:1]),
+                        seq_log_det_jacobians_cumsum,
+                    ],
+                    dim=1,
+                )
         seq_u = x
         seq_log_det_jacobians_cumsum /= torch.cumsum(
-            torch.ones_like(seq_log_det_jacobians_cumsum), dim=1)
+            torch.ones_like(seq_log_det_jacobians_cumsum), dim=1
+        )
         return seq_u, seq_log_det_jacobians_cumsum
 
     def forward_separate(self, seq, cond):
@@ -585,7 +662,8 @@ class fastpredNF_separate_cond(fastpredNF_separate):
         seq_log_det_jacobians = []
         for step in range(seq.shape[1]):
             cond_cat = torch.cat(
-                [cond[:, step], seq_cond[:, :step * self.input_size]], dim=-1)
+                [cond[:, step], seq_cond[:, : step * self.input_size]], dim=-1
+            )
             u, log_det_jacobian = self.net[step](seq[:, step], cond_cat)
             seq_u.append(u)
             seq_log_det_jacobians.append(log_det_jacobian)
@@ -613,17 +691,14 @@ class fastpredNF_separate_cond(fastpredNF_separate):
         seq_log_det_jacobians_cumsum = torch.cumsum(
             seq_log_det_jacobians, dim=2)
         seq_log_det_jacobians_cumsum /= torch.cumsum(
-            torch.ones_like(seq_log_det_jacobians_cumsum), dim=2)
+            torch.ones_like(seq_log_det_jacobians_cumsum), dim=2
+        )
         return seq, seq_log_det_jacobians_cumsum, seq_log_det_jacobians
 
 
-def create_RealNVP_step(n_blocks,
-                        input_size,
-                        hidden_size,
-                        n_hidden,
-                        cond_label_size=None,
-                        batch_norm=True):
-
+def create_RealNVP_step(
+    n_blocks, input_size, hidden_size, n_hidden, cond_label_size=None, batch_norm=True
+):
     modules = []
     mask = torch.arange(input_size).float() % 2
     for i in range(n_blocks):
@@ -638,15 +713,16 @@ def create_RealNVP_step(n_blocks,
     return FlowSequential(*modules)
 
 
-def create_MAF_step(n_blocks,
-                    input_size,
-                    hidden_size,
-                    n_hidden,
-                    cond_label_size=None,
-                    activation="ReLU",
-                    input_order="sequential",
-                    batch_norm=True):
-
+def create_MAF_step(
+    n_blocks,
+    input_size,
+    hidden_size,
+    n_hidden,
+    cond_label_size=None,
+    activation="ReLU",
+    input_order="sequential",
+    batch_norm=True,
+):
     modules = []
     input_degrees = None
     for i in range(n_blocks):
@@ -698,9 +774,7 @@ class Augment_VFlow(nn.Module):
 
 
 class DiagonalGaussianConditionalDensity(nn.Module):
-    def __init__(self,
-                 cond_dim,
-                 out_dim) -> None:
+    def __init__(self, cond_dim, out_dim) -> None:
         super().__init__()
         self.shift_net = get_mlp(
             cond_dim, [cond_dim * 2] * 2, out_dim, nn.ReLU)
@@ -723,20 +797,20 @@ class DiagonalGaussianConditionalDensity(nn.Module):
 def diagonal_gaussian_log_prob(w, means, log_stddevs):
     assert means.shape == log_stddevs.shape == w.shape
 
-    vars = torch.exp(log_stddevs)**2
+    vars = torch.exp(log_stddevs) ** 2
 
     *_, dim = w.shape
 
-    const_term = -.5*dim*np.log(2*np.pi)
+    const_term = -0.5 * dim * np.log(2 * np.pi)
     log_det_terms = -torch.sum(log_stddevs, dim=-1)
-    product_terms = -.5*torch.sum((w - means)**2 / vars, dim=-1)
+    product_terms = -0.5 * torch.sum((w - means) ** 2 / vars, dim=-1)
 
     return const_term + log_det_terms + product_terms
 
 
 def diagonal_gaussian_sample(means, log_stddevs):
     epsilon = torch.randn_like(means)
-    samples = torch.exp(log_stddevs)*epsilon + means
+    samples = torch.exp(log_stddevs) * epsilon + means
 
     log_probs = diagonal_gaussian_log_prob(samples, means, log_stddevs)
 
@@ -744,11 +818,12 @@ def diagonal_gaussian_sample(means, log_stddevs):
 
 
 def get_mlp(
-        num_input_channels,
-        hidden_channels,
-        num_output_channels,
-        activation,
-        log_softmax_outputs=False):
+    num_input_channels,
+    hidden_channels,
+    num_output_channels,
+    activation,
+    log_softmax_outputs=False,
+):
     layers = []
     prev_num_hidden_channels = num_input_channels
     for num_hidden_channels in hidden_channels:
@@ -764,17 +839,16 @@ def get_mlp(
 
 
 class CIF_step(nn.Module):
-    def __init__(self,
-                 bijection,
-                 input_size,
-                 cond_label_size=None) -> None:
+    def __init__(self, bijection, input_size, cond_label_size=None) -> None:
         super().__init__()
         self.bijection = bijection
         self.cond_label_size = cond_label_size
         self.r_u_given_z = DiagonalGaussianConditionalDensity(
-            input_size + cond_label_size, cond_label_size)
+            input_size + cond_label_size, cond_label_size
+        )
         self.q_u_given_w = DiagonalGaussianConditionalDensity(
-            input_size + cond_label_size, cond_label_size)
+            input_size + cond_label_size, cond_label_size
+        )
 
     def forward(self, z, y):
         u, log_r_u = self.r_u_given_z.sample(torch.cat([z, y], dim=-1))
@@ -792,45 +866,69 @@ class CIF_step(nn.Module):
 
 
 class fastpredNF_CIF(fastpredNF):
-    def build_net(self, n_blocks, input_size, hidden_size, n_hidden, cond_label_size, **kwargs):
+    def build_net(
+        self, n_blocks, input_size, hidden_size, n_hidden, cond_label_size, **kwargs
+    ):
         self.input_size = input_size
-        flow_key = kwargs['flow_architecture']
-        bijection = self.flow_dict[flow_key](n_blocks=n_blocks,
-                                             input_size=self.input_size,
-                                             hidden_size=hidden_size,
-                                             n_hidden=n_hidden,
-                                             cond_label_size=cond_label_size)
+        flow_key = kwargs["flow_architecture"]
+        bijection = self.flow_dict[flow_key](
+            n_blocks=n_blocks,
+            input_size=self.input_size,
+            hidden_size=hidden_size,
+            n_hidden=n_hidden,
+            cond_label_size=cond_label_size,
+        )
 
-        self.net = CIF_step(bijection,
-                            input_size=self.input_size,
-                            cond_label_size=cond_label_size)
+        self.net = CIF_step(
+            bijection, input_size=self.input_size, cond_label_size=cond_label_size
+        )
 
 
 class fastpredNF_CIF_separate(fastpredNF_separate):
-    def build_net(self, n_blocks, input_size, hidden_size, n_hidden, cond_label_size, **kwargs):
+    def build_net(
+        self, n_blocks, input_size, hidden_size, n_hidden, cond_label_size, **kwargs
+    ):
         self.input_size = input_size
-        flow_key = kwargs['flow_architecture']
-        pred_len = kwargs['pred_len']
-        self.net = nn.ModuleList([CIF_step(self.flow_dict[flow_key](n_blocks=n_blocks,
-                                                                    input_size=self.input_size,
-                                                                    hidden_size=hidden_size,
-                                                                    n_hidden=n_hidden,
-                                                                    cond_label_size=cond_label_size),
-                                           input_size,
-                                           cond_label_size)
-                                  for _ in range(pred_len)])
+        flow_key = kwargs["flow_architecture"]
+        pred_len = kwargs["pred_len"]
+        self.net = nn.ModuleList(
+            [
+                CIF_step(
+                    self.flow_dict[flow_key](
+                        n_blocks=n_blocks,
+                        input_size=self.input_size,
+                        hidden_size=hidden_size,
+                        n_hidden=n_hidden,
+                        cond_label_size=cond_label_size,
+                    ),
+                    input_size,
+                    cond_label_size,
+                )
+                for _ in range(pred_len)
+            ]
+        )
 
 
 class fastpredNF_CIF_separate_cond(fastpredNF_separate_cond):
-    def build_net(self, n_blocks, input_size, hidden_size, n_hidden, cond_label_size, **kwargs):
+    def build_net(
+        self, n_blocks, input_size, hidden_size, n_hidden, cond_label_size, **kwargs
+    ):
         self.input_size = input_size
-        flow_key = kwargs['flow_architecture']
-        pred_len = kwargs['pred_len']
-        self.net = nn.ModuleList([CIF_step(self.flow_dict[flow_key](n_blocks=n_blocks,
-                                                                    input_size=self.input_size,
-                                                                    hidden_size=hidden_size,
-                                                                    n_hidden=n_hidden,
-                                                                    cond_label_size=cond_label_size + i * self.input_size),
-                                           input_size,
-                                           cond_label_size + i * self.input_size)
-                                  for i in range(pred_len)])
+        flow_key = kwargs["flow_architecture"]
+        pred_len = kwargs["pred_len"]
+        self.net = nn.ModuleList(
+            [
+                CIF_step(
+                    self.flow_dict[flow_key](
+                        n_blocks=n_blocks,
+                        input_size=self.input_size,
+                        hidden_size=hidden_size,
+                        n_hidden=n_hidden,
+                        cond_label_size=cond_label_size + i * self.input_size,
+                    ),
+                    input_size,
+                    cond_label_size + i * self.input_size,
+                )
+                for i in range(pred_len)
+            ]
+        )
