@@ -88,7 +88,7 @@ class FlowerClient(NumPyClient):
         result_info = federatedTest(
             cfg=self.cfg,
             model=self.net,
-            visualize=False,
+            visualize=self.cfg.TEST.VISUALIZE,
         )
         return (
             float(result_info["ade"]),
