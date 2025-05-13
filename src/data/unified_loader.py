@@ -164,7 +164,7 @@ def unified_loader(
         from .MP.h36motion import seq_collate
 
     total_length = len(dataset)
-    subset_length = max(1, int(total_length * 1))
+    subset_length = max(1, int(total_length * 0.1)) #Changing to smaller value allows visualization to run
     indices = list(range(subset_length))
     dataset = Subset(dataset, indices)
 

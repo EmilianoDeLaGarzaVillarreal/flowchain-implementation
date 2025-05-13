@@ -2,7 +2,7 @@ from flwr.server.strategy import FedAvg
 import flwr as fl
 import argparse
 
-NUM_CLIENTS = 4
+NUM_CLIENTS = 1
 
 
 def main():
@@ -24,8 +24,8 @@ def main():
     strategy = FedAvg(
         fraction_fit=1.0,
         fraction_evaluate=0.5,
-        min_fit_clients=4,
-        min_evaluate_clients=4,
+        min_fit_clients=NUM_CLIENTS,
+        min_evaluate_clients=NUM_CLIENTS,
         min_available_clients=NUM_CLIENTS,
     )
 

@@ -120,6 +120,7 @@ class TP_Visualizer(Visualizer):
             index = dict_list[0]['index']
             min_pos, max_pos = self.get_minmax(index)
             xx, yy = self.get_grid(index)
+            print(f"DEBUG: prob_to_grid - xx.shape: {xx.shape}, yy.shape: {yy.shape}")
 
             for data_dict in dict_list:
                 data_dict["grid"] = [xx, yy]
@@ -132,8 +133,8 @@ class TP_Visualizer(Visualizer):
                             batch, _, timesteps, _ = prob.shape
 
                             zz_batch = []
-                            for i in range(batch):
-                                zz_timesteps = Parallel(n_jobs=timesteps)(delayed(self.griddata_on_cluster)(i, prob, xx, yy, max_pos, min_pos, j)
+                            for i in range(batch): #CHANGED N_JOBS TO 1 instead of timesteps, reduces parallelism
+                                zz_timesteps = Parallel(n_jobs=1)(delayed(self.griddata_on_cluster)(i, prob, xx, yy, max_pos, min_pos, j)
                                                                           for j in range(timesteps))
                                 #zz_timesteps = [self.griddata_on_cluster(i, prob, xx, yy, max_pos, min_pos, j) for j in range(timesteps)]
                                 zz_timesteps = np.stack(

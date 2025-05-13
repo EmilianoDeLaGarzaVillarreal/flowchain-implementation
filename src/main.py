@@ -48,7 +48,6 @@ def main() -> None:
             include_dashboard=False,
             _temp_dir="/tmp/ray",
             object_store_memory=1_000_000_000,
-            # <-- this is the magic line:
             num_gpus=1,
         )
         server = ServerApp(server_fn=make_server_fn(cfg))

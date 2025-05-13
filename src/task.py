@@ -17,7 +17,7 @@ from torch.utils.data import DataLoader
 
 
 DEVICE = torch.device("cuda")
-NUM_CLIENTS = 4
+NUM_CLIENTS = 1
 
 # Here I load the unified loader as a client loader, I pass clied_id and num_clients to get the partition from the dataset and we return
 # a DataLoader object
@@ -162,10 +162,10 @@ def evaluate_model(
                 "timing the computation, evaluating probability map, and visualizing... "
             )
             data_loader_one_each = unified_loader(
-                cfg, rand=False, split="test", batch_size=1
+                cfg, rand=False, split="test", batch_size=10
             )
             for i, data_dict in enumerate(
-                tqdm(data_loader_one_each, leave=False, total=10)
+                tqdm(data_loader_one_each, leave=False, total=1)
             ):
                 data_dict = {
                     k: (
@@ -177,9 +177,11 @@ def evaluate_model(
                 }
                 dict_list = []
 
+                print(f"Debug: Iteration {i}, before model.predict (warm-up)")
                 result_dict = model.predict(
                     deepcopy(data_dict), return_prob=True
                 )  # warm-up
+                print(f"Debug: Iteration {i}, after model.predict (warm-up), before main predict")
                 torch.cuda.synchronize()
                 starter.record()
                 result_dict = model.predict(
@@ -198,12 +200,16 @@ def evaluate_model(
                     run_times[t].append(curr_run_time)
 
                 dict_list.append(deepcopy(result_dict))
+                print(f"Debug: Iteration {i}, before metrics.denormalize")
                 dict_list = metrics.denormalize(
                     dict_list)  # denormalize the output
+                print(f"Debug: Iteration {i}, after metrics.denormalize")
                 if cfg.TEST.KDE:
                     torch.cuda.synchronize()
                     starter.record()
+                    print(f"Debug: Iteration {i}, after metrics.denormalize")
                     dict_list = kde(dict_list)
+                    print(f"Debug: Iteration {i}, after KDE")
                     ender.record()
                     torch.cuda.synchronize()
                     run_times[0][-1] += starter.elapsed_time(ender)
@@ -211,7 +217,9 @@ def evaluate_model(
                 result_list.append(metrics(deepcopy(dict_list)))
 
                 if visualize:
+                    print(f"Debug: Iteration {i}, before visualizer(dict_list)")
                     visualizer(dict_list)
+                    print(f"Debug: Iteration {i}, after visualizer(dict_list)")
                 if i == 9:
                     break
 

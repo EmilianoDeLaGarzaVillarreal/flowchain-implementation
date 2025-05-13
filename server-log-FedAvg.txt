@@ -21,7 +21,12 @@
 [92mINFO [0m:      Evaluation returned no results (`None`)
 [92mINFO [0m:      
 [92mINFO [0m:      [ROUND 1]
-[92mINFO [0m:      configure_fit: strategy sampled 4 clients (out of 4)
-[92mINFO [0m:      aggregate_fit: received 4 results and 0 failures
+[92mINFO [0m:      configure_fit: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_fit: received 1 results and 0 failures
 [93mWARNING [0m:   No fit_metrics_aggregation_fn provided
-[92mINFO [0m:      configure_evaluate: strategy sampled 4 clients (out of 4)
+[92mINFO [0m:      configure_evaluate: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_evaluate: received 0 results and 1 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [SUMMARY]
+[92mINFO [0m:      Run finished 1 round(s) in 6.41s
+[92mINFO [0m:      
