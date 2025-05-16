@@ -28,5 +28,5 @@
 [92mINFO [0m:      aggregate_evaluate: received 0 results and 1 failures
 [92mINFO [0m:      
 [92mINFO [0m:      [SUMMARY]
-[92mINFO [0m:      Run finished 1 round(s) in 6.41s
+[92mINFO [0m:      Run finished 1 round(s) in 125.97s
 [92mINFO [0m:      

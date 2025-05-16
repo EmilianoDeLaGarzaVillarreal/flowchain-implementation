@@ -44,7 +44,13 @@ pip install -r requirements.txt
 You can simulate federated training with four clients using different scenes as local data.
 
 ### 1. FedAvg (10 Rounds)
-
+Had to change output_to_trajectories, torch tensors weren't the size they are supposed to be
+Had to change fastpredNF class, log_prob and base_prob had different sizes than expected.
+Had to change TP_visualizer, prob_to_grid, RegularGridInterpolator instead of 2dInterpolator. Also ~mask
+Debugged task.py, evaluate function.
+Had to fix interpolated points that fell out of the grid, I needed to check the model and why it was giving me points of of the interpolation range, coordinated were given wrong x<->y
+had to fix node class because it was using 16-bit integers and MOT has pedestrians with a value greater than that
+had to create system path because dill.load was unable to find the environment module
 ```bash
 # Server
 python src/server_app.py --num_rounds 10 > server-log-FedAvg.txt 2>&1
@@ -54,6 +60,7 @@ python src/client_app.py --partition_id 0 --gpu 0 --config_file config/TP/FlowCh
 python src/client_app.py --partition_id 1 --gpu 0 --config_file config/TP/FlowChain/zara1.yml --data_fraction 1.0 > client2-FedAvg.txt 2>&1
 python src/client_app.py --partition_id 2 --gpu 0 --config_file config/TP/FlowChain/zara2.yml --data_fraction 1.0 > client3-FedAvg.txt 2>&1
 python src/client_app.py --partition_id 3 --gpu 0 --config_file config/TP/FlowChain/eth.yml --data_fraction 1.0 > client4-FedAvg.txt 2>&1
+python src/client_app.py --partition_id 3 --gpu 0 --config_file config/TP/FlowChain/mot.yml --data_fraction 1.0 --visualize > client5-FedAvg.txt 2>&1
 ```
 
 ### 2. FedCMB (10 Rounds)

@@ -65,10 +65,39 @@ def federatedTrain(
 def federatedTest(cfg: CfgNode, model: nn.Module, visualize):
     data_loader = unified_loader(cfg, rand=False, split="test")
     result_info = evaluate_model(cfg, model, data_loader, visualize)
+    print("RESULT INFO:", result_info)
     import json
 
+    def convert_to_json_serializable(obj):
+        if isinstance(obj, dict):
+            # If it's a dictionary, apply this function to each of its values.
+            return {k: convert_to_json_serializable(v) for k, v in obj.items()}
+        elif isinstance(obj, list):
+            # If it's a list, apply this function to each of its elements.
+            return [convert_to_json_serializable(elem) for elem in obj]
+        elif isinstance(obj, np.ndarray):
+            # If it's a NumPy array (like your 'log_prob'), convert it to a Python list.
+            return obj.tolist()
+        # Handles 'score', 'ade', 'fde', etc.
+        elif isinstance(obj, np.float64):
+            return float(obj)  # Convert NumPy float64 to Python float.
+        elif isinstance(obj, np.int64):  # Add other np integer types if you have them
+            return int(obj)  # Convert NumPy int64 to Python int.
+        elif isinstance(obj, np.bool_):
+            return bool(obj)  # Convert NumPy bool to Python bool.
+        # A more general catch-all for other NumPy scalar types
+        elif isinstance(obj, np.generic):
+            return (
+                obj.item()
+                # Converts to the closest Python native type (e.g. np.float32 -> float)
+            )
+        # If it's already a standard Python type, return it as is.
+        return obj
+
+    serialized_result = convert_to_json_serializable(result_info)
+
     with open(os.path.join(cfg.OUTPUT_DIR, "metrics.json"), "w") as fp:
-        json.dump(result_info, fp)
+        json.dump(serialized_result, fp)
     return result_info
 
 
@@ -176,12 +205,9 @@ def evaluate_model(
                     for k in data_dict
                 }
                 dict_list = []
-
-                print(f"Debug: Iteration {i}, before model.predict (warm-up)")
                 result_dict = model.predict(
                     deepcopy(data_dict), return_prob=True
                 )  # warm-up
-                print(f"Debug: Iteration {i}, after model.predict (warm-up), before main predict")
                 torch.cuda.synchronize()
                 starter.record()
                 result_dict = model.predict(
@@ -200,16 +226,12 @@ def evaluate_model(
                     run_times[t].append(curr_run_time)
 
                 dict_list.append(deepcopy(result_dict))
-                print(f"Debug: Iteration {i}, before metrics.denormalize")
                 dict_list = metrics.denormalize(
                     dict_list)  # denormalize the output
-                print(f"Debug: Iteration {i}, after metrics.denormalize")
                 if cfg.TEST.KDE:
                     torch.cuda.synchronize()
                     starter.record()
-                    print(f"Debug: Iteration {i}, after metrics.denormalize")
                     dict_list = kde(dict_list)
-                    print(f"Debug: Iteration {i}, after KDE")
                     ender.record()
                     torch.cuda.synchronize()
                     run_times[0][-1] += starter.elapsed_time(ender)
@@ -217,10 +239,8 @@ def evaluate_model(
                 result_list.append(metrics(deepcopy(dict_list)))
 
                 if visualize:
-                    print(f"Debug: Iteration {i}, before visualizer(dict_list)")
                     visualizer(dict_list)
-                    print(f"Debug: Iteration {i}, after visualizer(dict_list)")
-                if i == 9:
+                if i == 1:
                     break
 
             result_info.update(aggregate(result_list))

@@ -182,8 +182,12 @@ for data_class in ["train", "test", "val"]:
         data["frame_id"] = pd.to_numeric(data["frame_id"], downcast="integer")
         data["track_id"] = pd.to_numeric(data["track_id"], downcast="integer")
 
-        data["pos_x"] = data["bb_left"] + data["bb_width"] / 2.0
-        data["pos_y"] = data["bb_top"] + data["bb_height"] / 2.0
+        data["x"] = data["bb_left"] + data["bb_width"] / 2.0
+        data["y"] = data["bb_top"] + data["bb_height"] / 2.0
+
+        # apply data scale as same as PECnet
+        data["x"] = data["x"] / 50
+        data["y"] = data["y"] / 50
 
         # data['frame_id'] -= data['frame_id'].min()
 
@@ -194,85 +198,95 @@ for data_class in ["train", "test", "val"]:
 
         max_timesteps = data["frame_id"].max()
 
-        frame_downsample = 1
-        if frame_rate > 0 and target_dt * frame_rate > 1:
-            frame_downsample = int(round(target_dt * frame_rate))
-        if frame_downsample <= 0:
-            frame_downsample = 1
-        dt = (frame_downsample / frame_rate) if frame_rate > 0 else target_dt
-        print(
-            f"Processing {desired_source}: frame_rate={frame_rate}, frame_downsample={
-                frame_downsample
-            }, calculated_dt={dt}"
-        )
-        if dt <= 1e-6:  # Check for very small or zero dt
-            print(f"  WARNING: dt is very small or zero for {desired_source}!")
-
-        data["frame_id"] = data["frame_id"] // frame_downsample
-
-        # print(data.head())
-        # print(data.info())
-        # if data_class == "test":
-        #     time.sleep(5)
-
-        # print(f"    Orig FPS: {frame_rate}, Target DT: {target_dt:.2f}s, Downsample Factor: {frame_downsample}, Actual Scene DT: {dt:.4f}s\n")
-
-        scene = Scene(
-            timesteps=max_timesteps + 1,
-            dt=dt,
-            name=desired_source,
-            aug_func=augment if data_class == "train" else None,
-        )
-        # print(f"Scene: {scene.name}, Scene dt: {scene.dt}\n")
-
-        for node_id in data["node_id"].unique():
-            node_df = data[data["node_id"] == node_id]
-
-            node_values = node_df[["pos_x", "pos_y"]].values
-
-            if node_values.shape[0] < 2:
-                continue
-
-            new_first_idx = node_df["frame_id"].iloc[0]
-
-            x = node_values[:, 0]
-            y = node_values[:, 1]
-            vx = derivative_of(x, scene.dt)
-            vy = derivative_of(y, scene.dt)
-            ax = derivative_of(vx, scene.dt)
-            ay = derivative_of(vy, scene.dt)
-
-            data_dict = {
-                ("position", "x"): x,
-                ("position", "y"): y,
-                ("velocity", "x"): vx,
-                ("velocity", "y"): vy,
-                ("acceleration", "x"): ax,
-                ("acceleration", "y"): ay,
-            }
-
-            node_data = pd.DataFrame(data_dict, columns=data_columns)
-            node = Node(
-                node_type=env.NodeType.PEDESTRIAN,
-                node_id=node_id,
-                data=node_data,
+        if len(data) > 0:
+            scene = Scene(
+                timesteps=max_timesteps + 1,
+                dt=target_dt,
+                name=desired_source,
+                aug_func=augment if data_class == "train" else None,
             )
-            node.first_timestep = new_first_idx
+            n = 0
+            for node_id in pd.unique(data["node_id"]):
+                # Use .copy() to avoid SettingWithCopyWarning
+                node_df = data[data["node_id"] == node_id].copy()
 
-            scene.nodes.append(node)
-        if data_class == "train":
-            scene.augmented = list()
-            angles = np.arange(0, 360, 15) if data_class == "train" else [0]
-            for angle in angles:
-                scene.augmented.append(augment_scene(scene, angle))
+                # **Add this section to handle duplicates and ensure sort order for the specific node**
+                if not node_df.empty:
+                    # Sort by frame_id first (important if original sort of 'data' wasn't stable for duplicates)
+                    # then drop duplicates, keeping the first entry for that frame.
+                    node_df.sort_values("frame_id", inplace=True)
+                    node_df.drop_duplicates(
+                        subset=["frame_id"], keep="first", inplace=True
+                    )
 
-        print(scene)
-        scenes.append(scene)
+                if len(node_df) > 1:
+                    # ... (your debugging pdb.set_trace() and assert logic)
+                    frame_differences = np.diff(node_df["frame_id"])
+                    is_sequential = np.all(frame_differences == 1)
 
-    print(f"**Processed {len(scenes):.2f} scene for data class {data_class}**\n")
+                    if not is_sequential:
+                        print(
+                            f"Debugging: Problem detected with node_id: {
+                                node_id
+                            } AFTER drop_duplicates"
+                        )
+                        # .to_list() or .values for cleaner print
+                        print(f"Frame IDs: {node_df['frame_id'].to_list()}")
+                        print(f"Differences: {frame_differences}")
+                        import pdb
 
+                        pdb.set_trace()
+
+                    assert (
+                        is_sequential
+                    ), f"Frame IDs are not sequential for node {
+                        node_id
+                    } after deduplication"
+                    # ... rest of your node processing
+
+                    node_values = node_df[["x", "y"]].values
+
+                    if node_values.shape[0] < 2:
+                        continue
+
+                    new_first_idx = node_df["frame_id"].iloc[0]
+
+                    x = node_values[:, 0]
+                    y = node_values[:, 1]
+                    vx = derivative_of(x, scene.dt)
+                    vy = derivative_of(y, scene.dt)
+                    ax = derivative_of(vx, scene.dt)
+                    ay = derivative_of(vy, scene.dt)
+
+                    data_dict = {
+                        ("position", "x"): x,
+                        ("position", "y"): y,
+                        ("velocity", "x"): vx,
+                        ("velocity", "y"): vy,
+                        ("acceleration", "x"): ax,
+                        ("acceleration", "y"): ay,
+                    }
+
+                    node_data = pd.DataFrame(data_dict, columns=data_columns)
+                    node = Node(
+                        node_type=env.NodeType.PEDESTRIAN,
+                        node_id=node_id,
+                        data=node_data,
+                    )
+                    node.first_timestep = new_first_idx
+
+                    scene.nodes.append(node)
+            if data_class == "train":
+                scene.augmented = list()
+                angles = np.arange(0, 360, 15) if data_class == "train" else [0]
+                for angle in angles:
+                    scene.augmented.append(augment_scene(scene, angle))
+
+            print(scene)
+            scenes.append(scene)
     env.scenes = scenes
 
     if len(scenes) > 0:
         with open(data_dict_path, "wb") as f:
+            # pdb.set_trace()
             dill.dump(env, f, protocol=dill.HIGHEST_PROTOCOL)

@@ -9,6 +9,31 @@ from typing import List
 import argparse
 from models.build_model import Build_Model
 from data.unified_loader import unified_loader
+from data.TP.environment import environment
+import os
+import sys
+
+# --- BEGIN sys.path MODIFICATION ---
+# This assumes your environment.py is located at:
+# /home/emiliano/Documents/Flowchain-training/flowchain-implementation/src/data/TP/environment.py
+
+# Get the path to the directory that client_app.py is in (e.g., .../src/)
+base_src_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Construct the path to the directory DIRECTLY CONTAINING 'environment.py'
+# This allows 'import environment' to find it if environment.py is in this directory.
+path_to_environment_module_dir = os.path.join(
+    base_src_dir,
+    "data",
+    "TP",  # This is .../src/
+)
+
+# Add this path to the beginning of sys.path if it's not already there
+if path_to_environment_module_dir not in sys.path:
+    sys.path.insert(0, path_to_environment_module_dir)
+    print(f"INFO: Added to sys.path for dill: {
+          path_to_environment_module_dir}")
+# --- END sys.path MODIFICATION ---
 
 
 class FlowerClient(NumPyClient):

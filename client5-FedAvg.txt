@@ -1,0 +1,134 @@
+/home/emiliano/.pyenv/versions/flowchain-FL-3.12/lib/python3.12/site-packages/ncls/__init__.py:2: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+  import pkg_resources
+[93mWARNING [0m:   DEPRECATED FEATURE: flwr.client.start_client() is deprecated.
+	Instead, use the `flower-supernode` CLI command to start a SuperNode as shown below:
+
+		$ flower-supernode --insecure --superlink='<IP>:<PORT>'
+
+	To view all available options, run:
+
+		$ flower-supernode --help
+
+	Using `start_client()` is deprecated.
+
+            This is a deprecated feature. It will be removed
+            entirely in future versions of Flower.
+        
+[92mINFO [0m:      
+[92mINFO [0m:      Received: get_parameters message 556c0776-1290-4f01-bf8a-11c2eb9de1fc
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message a94d37bc-91dc-488e-9a1d-37ee70d7b40f
+INFO: Added to sys.path for dill: /home/emiliano/Documents/Flowchain-training/flowchain-implementation/src/data/TP
+Configuration file loaded from config/TP/FlowChain/mot.yml.
+output dirname: output/config/TP/FlowChain/mot
+[Client None] fit() called — loading parameters, about to train...
+[Client None]  train loader size: 50  |  batch size: 128
+[Client] Start local training for 1 epoch(s)
+Epoch 1/1:   0%|          | 0/50 [00:00<?, ?it/s]Epoch 1/1:   0%|          | 0/50 [00:00<?, ?it/s, loss=86.5862]Epoch 1/1:   2%|▏         | 1/50 [00:00<00:41,  1.18it/s, loss=86.5862]Epoch 1/1:   2%|▏         | 1/50 [00:01<00:41,  1.18it/s, loss=76.1522]Epoch 1/1:   4%|▍         | 2/50 [00:01<00:31,  1.53it/s, loss=76.1522]Epoch 1/1:   4%|▍         | 2/50 [00:01<00:31,  1.53it/s, loss=67.6667]Epoch 1/1:   6%|▌         | 3/50 [00:01<00:27,  1.70it/s, loss=67.6667]Epoch 1/1:   6%|▌         | 3/50 [00:02<00:27,  1.70it/s, loss=60.3120]Epoch 1/1:   8%|▊         | 4/50 [00:02<00:25,  1.79it/s, loss=60.3120]Epoch 1/1:   8%|▊         | 4/50 [00:02<00:25,  1.79it/s, loss=54.2895]Epoch 1/1:  10%|█         | 5/50 [00:02<00:24,  1.83it/s, loss=54.2895]Epoch 1/1:  10%|█         | 5/50 [00:03<00:24,  1.83it/s, loss=48.8459]Epoch 1/1:  12%|█▏        | 6/50 [00:03<00:23,  1.88it/s, loss=48.8459]Epoch 1/1:  12%|█▏        | 6/50 [00:03<00:23,  1.88it/s, loss=44.3051]Epoch 1/1:  14%|█▍        | 7/50 [00:03<00:22,  1.90it/s, loss=44.3051]Epoch 1/1:  14%|█▍        | 7/50 [00:04<00:22,  1.90it/s, loss=40.2472]Epoch 1/1:  16%|█▌        | 8/50 [00:04<00:21,  1.91it/s, loss=40.2472]Epoch 1/1:  16%|█▌        | 8/50 [00:04<00:21,  1.91it/s, loss=36.7190]Epoch 1/1:  18%|█▊        | 9/50 [00:04<00:21,  1.91it/s, loss=36.7190]Epoch 1/1:  18%|█▊        | 9/50 [00:05<00:21,  1.91it/s, loss=33.6335]Epoch 1/1:  20%|██        | 10/50 [00:05<00:20,  1.91it/s, loss=33.6335]Epoch 1/1:  20%|██        | 10/50 [00:06<00:20,  1.91it/s, loss=30.8624]Epoch 1/1:  22%|██▏       | 11/50 [00:06<00:20,  1.89it/s, loss=30.8624]Epoch 1/1:  22%|██▏       | 11/50 [00:06<00:20,  1.89it/s, loss=28.4597]Epoch 1/1:  24%|██▍       | 12/50 [00:06<00:20,  1.89it/s, loss=28.4597]Epoch 1/1:  24%|██▍       | 12/50 [00:07<00:20,  1.89it/s, loss=26.2789]Epoch 1/1:  26%|██▌       | 13/50 [00:07<00:19,  1.89it/s, loss=26.2789]Epoch 1/1:  26%|██▌       | 13/50 [00:07<00:19,  1.89it/s, loss=24.4467]Epoch 1/1:  28%|██▊       | 14/50 [00:07<00:18,  1.90it/s, loss=24.4467]Epoch 1/1:  28%|██▊       | 14/50 [00:08<00:18,  1.90it/s, loss=22.6681]Epoch 1/1:  30%|███       | 15/50 [00:08<00:18,  1.92it/s, loss=22.6681]Epoch 1/1:  30%|███       | 15/50 [00:08<00:18,  1.92it/s, loss=21.1034]Epoch 1/1:  32%|███▏      | 16/50 [00:08<00:17,  1.94it/s, loss=21.1034]Epoch 1/1:  32%|███▏      | 16/50 [00:09<00:17,  1.94it/s, loss=19.7307]Epoch 1/1:  34%|███▍      | 17/50 [00:09<00:16,  1.95it/s, loss=19.7307]Epoch 1/1:  34%|███▍      | 17/50 [00:09<00:16,  1.95it/s, loss=18.4419]Epoch 1/1:  36%|███▌      | 18/50 [00:09<00:16,  1.95it/s, loss=18.4419]Epoch 1/1:  36%|███▌      | 18/50 [00:10<00:16,  1.95it/s, loss=17.2226]Epoch 1/1:  38%|███▊      | 19/50 [00:10<00:17,  1.81it/s, loss=17.2226]Epoch 1/1:  38%|███▊      | 19/50 [00:10<00:17,  1.81it/s, loss=16.2475]Epoch 1/1:  40%|████      | 20/50 [00:10<00:16,  1.85it/s, loss=16.2475]Epoch 1/1:  40%|████      | 20/50 [00:11<00:16,  1.85it/s, loss=15.2070]Epoch 1/1:  42%|████▏     | 21/50 [00:11<00:15,  1.88it/s, loss=15.2070]Epoch 1/1:  42%|████▏     | 21/50 [00:11<00:15,  1.88it/s, loss=14.3340]Epoch 1/1:  44%|████▍     | 22/50 [00:11<00:14,  1.90it/s, loss=14.3340]Epoch 1/1:  44%|████▍     | 22/50 [00:12<00:14,  1.90it/s, loss=13.4961]Epoch 1/1:  46%|████▌     | 23/50 [00:12<00:14,  1.91it/s, loss=13.4961]Epoch 1/1:  46%|████▌     | 23/50 [00:12<00:14,  1.91it/s, loss=12.8082]Epoch 1/1:  48%|████▊     | 24/50 [00:12<00:13,  1.93it/s, loss=12.8082]Epoch 1/1:  48%|████▊     | 24/50 [00:13<00:13,  1.93it/s, loss=12.1761]Epoch 1/1:  50%|█████     | 25/50 [00:13<00:12,  1.94it/s, loss=12.1761]Epoch 1/1:  50%|█████     | 25/50 [00:13<00:12,  1.94it/s, loss=11.4877]Epoch 1/1:  52%|█████▏    | 26/50 [00:13<00:12,  1.94it/s, loss=11.4877]Epoch 1/1:  52%|█████▏    | 26/50 [00:14<00:12,  1.94it/s, loss=10.9984]Epoch 1/1:  54%|█████▍    | 27/50 [00:14<00:11,  1.94it/s, loss=10.9984]Epoch 1/1:  54%|█████▍    | 27/50 [00:14<00:11,  1.94it/s, loss=10.4771]Epoch 1/1:  56%|█████▌    | 28/50 [00:14<00:11,  1.94it/s, loss=10.4771]Epoch 1/1:  56%|█████▌    | 28/50 [00:15<00:11,  1.94it/s, loss=10.0043]Epoch 1/1:  58%|█████▊    | 29/50 [00:15<00:10,  1.95it/s, loss=10.0043]Epoch 1/1:  58%|█████▊    | 29/50 [00:15<00:10,  1.95it/s, loss=9.3420] Epoch 1/1:  60%|██████    | 30/50 [00:15<00:10,  1.96it/s, loss=9.3420]Epoch 1/1:  60%|██████    | 30/50 [00:16<00:10,  1.96it/s, loss=8.9301]Epoch 1/1:  62%|██████▏   | 31/50 [00:16<00:09,  1.95it/s, loss=8.9301]Epoch 1/1:  62%|██████▏   | 31/50 [00:16<00:09,  1.95it/s, loss=8.6041]Epoch 1/1:  64%|██████▍   | 32/50 [00:16<00:09,  1.94it/s, loss=8.6041]Epoch 1/1:  64%|██████▍   | 32/50 [00:17<00:09,  1.94it/s, loss=8.0795]Epoch 1/1:  66%|██████▌   | 33/50 [00:17<00:08,  1.95it/s, loss=8.0795]Epoch 1/1:  66%|██████▌   | 33/50 [00:17<00:08,  1.95it/s, loss=7.7788]Epoch 1/1:  68%|██████▊   | 34/50 [00:17<00:08,  1.95it/s, loss=7.7788]Epoch 1/1:  68%|██████▊   | 34/50 [00:18<00:08,  1.95it/s, loss=7.3777]Epoch 1/1:  70%|███████   | 35/50 [00:18<00:07,  1.95it/s, loss=7.3777]Epoch 1/1:  70%|███████   | 35/50 [00:18<00:07,  1.95it/s, loss=7.1481]Epoch 1/1:  72%|███████▏  | 36/50 [00:18<00:07,  1.96it/s, loss=7.1481]Epoch 1/1:  72%|███████▏  | 36/50 [00:19<00:07,  1.96it/s, loss=6.7926]Epoch 1/1:  74%|███████▍  | 37/50 [00:19<00:06,  1.95it/s, loss=6.7926]Epoch 1/1:  74%|███████▍  | 37/50 [00:20<00:06,  1.95it/s, loss=6.5568]Epoch 1/1:  76%|███████▌  | 38/50 [00:20<00:06,  1.96it/s, loss=6.5568]Epoch 1/1:  76%|███████▌  | 38/50 [00:20<00:06,  1.96it/s, loss=6.4752]Epoch 1/1:  78%|███████▊  | 39/50 [00:20<00:05,  1.96it/s, loss=6.4752]Epoch 1/1:  78%|███████▊  | 39/50 [00:21<00:05,  1.96it/s, loss=5.8606]Epoch 1/1:  80%|████████  | 40/50 [00:21<00:05,  1.95it/s, loss=5.8606]Epoch 1/1:  80%|████████  | 40/50 [00:21<00:05,  1.95it/s, loss=5.6156]Epoch 1/1:  82%|████████▏ | 41/50 [00:21<00:04,  1.94it/s, loss=5.6156]Epoch 1/1:  82%|████████▏ | 41/50 [00:22<00:04,  1.94it/s, loss=5.5096]Epoch 1/1:  84%|████████▍ | 42/50 [00:22<00:04,  1.94it/s, loss=5.5096]Epoch 1/1:  84%|████████▍ | 42/50 [00:22<00:04,  1.94it/s, loss=5.4448]Epoch 1/1:  86%|████████▌ | 43/50 [00:22<00:03,  1.95it/s, loss=5.4448]Epoch 1/1:  86%|████████▌ | 43/50 [00:23<00:03,  1.95it/s, loss=5.1381]Epoch 1/1:  88%|████████▊ | 44/50 [00:23<00:03,  1.95it/s, loss=5.1381]Epoch 1/1:  88%|████████▊ | 44/50 [00:23<00:03,  1.95it/s, loss=4.9820]Epoch 1/1:  90%|█████████ | 45/50 [00:23<00:02,  1.94it/s, loss=4.9820]Epoch 1/1:  90%|█████████ | 45/50 [00:24<00:02,  1.94it/s, loss=4.6165]Epoch 1/1:  92%|█████████▏| 46/50 [00:24<00:02,  1.95it/s, loss=4.6165]Epoch 1/1:  92%|█████████▏| 46/50 [00:24<00:02,  1.95it/s, loss=4.5091]Epoch 1/1:  94%|█████████▍| 47/50 [00:24<00:01,  1.94it/s, loss=4.5091]Epoch 1/1:  94%|█████████▍| 47/50 [00:25<00:01,  1.94it/s, loss=4.2672]Epoch 1/1:  96%|█████████▌| 48/50 [00:25<00:01,  1.94it/s, loss=4.2672]Epoch 1/1:  96%|█████████▌| 48/50 [00:25<00:01,  1.94it/s, loss=4.0706]Epoch 1/1:  98%|█████████▊| 49/50 [00:25<00:00,  1.94it/s, loss=4.0706]Epoch 1/1:  98%|█████████▊| 49/50 [00:26<00:00,  1.94it/s, loss=3.9424]Epoch 1/1: 100%|██████████| 50/50 [00:26<00:00,  1.94it/s, loss=3.9424]                                                                       [92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 064649fb-8c50-4095-95a2-2bdcb360f5a1
+[Client] Finished local training | Loss: 20.3250
+[Client None] fit() returning — trained for 1 local epochs
+timing the computation, evaluating probability map, and visualizing... 
+  0%|          | 0/1 [00:00<?, ?it/s]                                     [91mERROR [0m:     Client raised an exception.
+Traceback (most recent call last):
+  File "/home/emiliano/.pyenv/versions/flowchain-FL-3.12/lib/python3.12/site-packages/flwr/client/app.py", line 571, in start_client_internal
+    reply_message = client_app(message=message, context=context)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/emiliano/.pyenv/versions/flowchain-FL-3.12/lib/python3.12/site-packages/flwr/client/client_app.py", line 144, in __call__
+    return self._call(message, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/emiliano/.pyenv/versions/flowchain-FL-3.12/lib/python3.12/site-packages/flwr/client/client_app.py", line 128, in ffn
+    out_message = handle_legacy_message_from_msgtype(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/emiliano/.pyenv/versions/flowchain-FL-3.12/lib/python3.12/site-packages/flwr/client/message_handler/message_handler.py", line 135, in handle_legacy_message_from_msgtype
+    evaluate_res = maybe_call_evaluate(
+                   ^^^^^^^^^^^^^^^^^^^^
+  File "/home/emiliano/.pyenv/versions/flowchain-FL-3.12/lib/python3.12/site-packages/flwr/client/client.py", line 244, in maybe_call_evaluate
+    return client.evaluate(evaluate_ins)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/emiliano/.pyenv/versions/flowchain-FL-3.12/lib/python3.12/site-packages/flwr/client/numpy_client.py", line 251, in _evaluate
+    results = self.numpy_client.evaluate(parameters, ins.config)  # type: ignore
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/emiliano/Documents/Flowchain-training/flowchain-implementation/src/client_app.py", line 113, in evaluate
+    result_info = federatedTest(
+                  ^^^^^^^^^^^^^^
+  File "/home/emiliano/Documents/Flowchain-training/flowchain-implementation/src/task.py", line 67, in federatedTest
+    result_info = evaluate_model(cfg, model, data_loader, visualize)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/emiliano/Documents/Flowchain-training/flowchain-implementation/src/task.py", line 238, in evaluate_model
+    dict_list = visualizer.prob_to_grid(dict_list)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/emiliano/Documents/Flowchain-training/flowchain-implementation/src/visualization/TP_visualizer.py", line 156, in prob_to_grid
+    zz_timesteps = Parallel(n_jobs=1)(
+                   ^^^^^^^^^^^^^^^^^^^
+  File "/home/emiliano/.pyenv/versions/flowchain-FL-3.12/lib/python3.12/site-packages/joblib/parallel.py", line 1918, in __call__
+    return output if self.return_generator else list(output)
+                                                ^^^^^^^^^^^^
+  File "/home/emiliano/.pyenv/versions/flowchain-FL-3.12/lib/python3.12/site-packages/joblib/parallel.py", line 1847, in _get_sequential_output
+    res = func(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/emiliano/Documents/Flowchain-training/flowchain-implementation/src/visualization/TP_visualizer.py", line 303, in griddata_on_cluster
+    lnk = linkage(prob_[:, :-1], method="single", metric="euclidean")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/emiliano/.pyenv/versions/flowchain-FL-3.12/lib/python3.12/site-packages/scipy/cluster/hierarchy.py", line 1033, in linkage
+    n = int(distance.num_obs_y(y))
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/emiliano/.pyenv/versions/flowchain-FL-3.12/lib/python3.12/site-packages/scipy/spatial/distance.py", line 2742, in num_obs_y
+    raise ValueError("The number of observations cannot be determined on "
+ValueError: The number of observations cannot be determined on an empty distance matrix.
+Traceback (most recent call last):
+  File "/home/emiliano/Documents/Flowchain-training/flowchain-implementation/src/client_app.py", line 169, in <module>
+    main()
+  File "/home/emiliano/Documents/Flowchain-training/flowchain-implementation/src/client_app.py", line 161, in main
+    fl.client.start_client(server_address="0.0.0.0:9090",
+  File "/home/emiliano/.pyenv/versions/flowchain-FL-3.12/lib/python3.12/site-packages/flwr/client/app.py", line 201, in start_client
+    start_client_internal(
+  File "/home/emiliano/.pyenv/versions/flowchain-FL-3.12/lib/python3.12/site-packages/flwr/client/app.py", line 578, in start_client_internal
+    raise ex
+  File "/home/emiliano/.pyenv/versions/flowchain-FL-3.12/lib/python3.12/site-packages/flwr/client/app.py", line 571, in start_client_internal
+    reply_message = client_app(message=message, context=context)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/emiliano/.pyenv/versions/flowchain-FL-3.12/lib/python3.12/site-packages/flwr/client/client_app.py", line 144, in __call__
+    return self._call(message, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/emiliano/.pyenv/versions/flowchain-FL-3.12/lib/python3.12/site-packages/flwr/client/client_app.py", line 128, in ffn
+    out_message = handle_legacy_message_from_msgtype(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/emiliano/.pyenv/versions/flowchain-FL-3.12/lib/python3.12/site-packages/flwr/client/message_handler/message_handler.py", line 135, in handle_legacy_message_from_msgtype
+    evaluate_res = maybe_call_evaluate(
+                   ^^^^^^^^^^^^^^^^^^^^
+  File "/home/emiliano/.pyenv/versions/flowchain-FL-3.12/lib/python3.12/site-packages/flwr/client/client.py", line 244, in maybe_call_evaluate
+    return client.evaluate(evaluate_ins)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/emiliano/.pyenv/versions/flowchain-FL-3.12/lib/python3.12/site-packages/flwr/client/numpy_client.py", line 251, in _evaluate
+    results = self.numpy_client.evaluate(parameters, ins.config)  # type: ignore
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/emiliano/Documents/Flowchain-training/flowchain-implementation/src/client_app.py", line 113, in evaluate
+    result_info = federatedTest(
+                  ^^^^^^^^^^^^^^
+  File "/home/emiliano/Documents/Flowchain-training/flowchain-implementation/src/task.py", line 67, in federatedTest
+    result_info = evaluate_model(cfg, model, data_loader, visualize)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/emiliano/Documents/Flowchain-training/flowchain-implementation/src/task.py", line 238, in evaluate_model
+    dict_list = visualizer.prob_to_grid(dict_list)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/emiliano/Documents/Flowchain-training/flowchain-implementation/src/visualization/TP_visualizer.py", line 156, in prob_to_grid
+    zz_timesteps = Parallel(n_jobs=1)(
+                   ^^^^^^^^^^^^^^^^^^^
+  File "/home/emiliano/.pyenv/versions/flowchain-FL-3.12/lib/python3.12/site-packages/joblib/parallel.py", line 1918, in __call__
+    return output if self.return_generator else list(output)
+                                                ^^^^^^^^^^^^
+  File "/home/emiliano/.pyenv/versions/flowchain-FL-3.12/lib/python3.12/site-packages/joblib/parallel.py", line 1847, in _get_sequential_output
+    res = func(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/emiliano/Documents/Flowchain-training/flowchain-implementation/src/visualization/TP_visualizer.py", line 303, in griddata_on_cluster
+    lnk = linkage(prob_[:, :-1], method="single", metric="euclidean")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/emiliano/.pyenv/versions/flowchain-FL-3.12/lib/python3.12/site-packages/scipy/cluster/hierarchy.py", line 1033, in linkage
+    n = int(distance.num_obs_y(y))
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/emiliano/.pyenv/versions/flowchain-FL-3.12/lib/python3.12/site-packages/scipy/spatial/distance.py", line 2742, in num_obs_y
+    raise ValueError("The number of observations cannot be determined on "
+ValueError: The number of observations cannot be determined on an empty distance matrix.

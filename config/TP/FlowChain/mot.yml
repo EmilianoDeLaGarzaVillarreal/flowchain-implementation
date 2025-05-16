@@ -3,7 +3,7 @@ MODEL:
   ENCODER_TYPE: trajectron
 
 DATA:
-  DATASET_NAME: "eth"
+  DATASET_NAME: "MOT"
   TP:
     PRED_STATE: "state_v"
     ACCEPT_NAN: True

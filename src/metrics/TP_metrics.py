@@ -8,24 +8,29 @@ from yacs.config import CfgNode
 from typing import List, Dict
 from data.TP.trajectron_dataset import hypers
 import warnings
-warnings.simplefilter('ignore')
+
+warnings.simplefilter("ignore")
 
 
 class TP_metrics(object):
     def __init__(self, cfg: CfgNode):
-        node = 'PEDESTRIAN'
+        node = "PEDESTRIAN"
         self.state = hypers[cfg.DATA.TP.PRED_STATE][node]
-        env_path = Path(cfg.DATA.PATH) / cfg.DATA.TASK / \
-            "processed_data" / f"{cfg.DATA.DATASET_NAME}_train.pkl"
-        with open(env_path, 'rb') as f:
-            self.env = dill.load(f, encoding='latin1')
+        env_path = (
+            Path(cfg.DATA.PATH)
+            / cfg.DATA.TASK
+            / "processed_data"
+            / f"{cfg.DATA.DATASET_NAME}_train.pkl"
+        )
+        with open(env_path, "rb") as f:
+            self.env = dill.load(f, encoding="latin1")
 
         # TODO: params for other nodes
         mean, std = self.env.get_standardize_params(self.state, node)
         self.mean = torch.Tensor(mean).cuda()
         self.std = torch.Tensor(std).cuda()
-        if cfg.DATA.TP.PRED_STATE == 'state_p':
-            self.std = self.env.attention_radius[('PEDESTRIAN', 'PEDESTRIAN')]
+        if cfg.DATA.TP.PRED_STATE == "state_p":
+            self.std = self.env.attention_radius[("PEDESTRIAN", "PEDESTRIAN")]
 
         self.dataset = cfg.DATA.DATASET_NAME
 
@@ -33,10 +38,16 @@ class TP_metrics(object):
     def __call__(self, dict_list: List) -> Dict:
         ade, fde, emd, log_prob = [], [], [], []
         for data_dict in dict_list:
-            ade.append(displacement_error(
-                data_dict[('pred', 0)][:, -12:], data_dict['gt'][:, -12:]))
-            fde.append(final_displacement_error(
-                data_dict[('pred', 0)][:, -1], data_dict['gt'][:, -1]))
+            ade.append(
+                displacement_error(
+                    data_dict[("pred", 0)][:, -12:], data_dict["gt"][:, -12:]
+                )
+            )
+            fde.append(
+                final_displacement_error(
+                    data_dict[("pred", 0)][:, -1], data_dict["gt"][:, -1]
+                )
+            )
             emd.append(self.emd(data_dict))
             log_prob.append(self.log_prob(data_dict))
 
@@ -44,19 +55,21 @@ class TP_metrics(object):
         fde = evaluate_helper(fde)
         emd = evaluate_helper(emd)
         log_prob = evaluate_helper(log_prob)
-        if self.dataset == 'eth':
+        if self.dataset == "eth":
             ade /= 0.6
             fde /= 0.6
-        if self.dataset == 'sdd':
+        if self.dataset == "sdd":
             ade = ade * 50
             fde = fde * 50
 
-        return {"score": ade.cpu().numpy(),
-                "ade": ade.cpu().numpy(),
-                "fde": fde.cpu().numpy(),
-                "emd": emd.cpu().numpy(),
-                "log_prob": log_prob.cpu().numpy(),
-                "nsample": len(data_dict[('pred', 0)])}
+        return {
+            "score": ade.cpu().numpy(),
+            "ade": ade.cpu().numpy(),
+            "fde": fde.cpu().numpy(),
+            "emd": emd.cpu().numpy(),
+            "log_prob": log_prob.cpu().numpy(),
+            "nsample": len(data_dict[("pred", 0)]),
+        }
 
     def denormalize(self, dict_list: List) -> List:
         for data_dict in dict_list:
@@ -67,47 +80,67 @@ class TP_metrics(object):
 
     def output_to_trajectories(self, data_dict: Dict) -> Dict:
         # see preprocessing.py
-        assert 'acceleration' not in self.state.keys()
-        if 'position' in self.state.keys():
-            data_dict[('pred', 0)] += data_dict['obs'][:, -1:, 0:2]
+        assert "acceleration" not in self.state.keys()
+        if "position" in self.state.keys():
+            data_dict[("pred", 0)] += data_dict["obs"][:, -1:, 0:2]
             for k in data_dict.keys():
                 if k[0] == "prob" and type(data_dict[k]) == torch.Tensor:
-                    offset = data_dict['obs'][:, None, -1:,
-                                              0:2] if k[1] == 0 else data_dict['gt'][:, None, k[1]-1:k[1], 0:2]
+                    offset = (
+                        data_dict["obs"][:, None, -1:, 0:2]
+                        if k[1] == 0
+                        else data_dict["gt"][:, None, k[1] - 1: k[1], 0:2]
+                    )
                     data_dict[k][..., :2] += offset
 
-        elif 'velocity' in self.state.keys():
-            data_dict[('pred', 0)] = torch.cumsum(data_dict[('pred', 0)], dim=1) * \
-                data_dict['dt'][:, None, None] + data_dict['obs'][:, -1:, 0:2]
-            data_dict['gt'] = torch.cumsum(
-                data_dict['gt'], dim=1) * data_dict['dt'][:, None, None] + data_dict['obs'][:, -1:, 0:2]
+        elif "velocity" in self.state.keys():
+            data_dict[("pred", 0)] = (
+                torch.cumsum(data_dict[("pred", 0)], dim=1)
+                * data_dict["dt"][:, None, None]
+                + data_dict["obs"][:, -1:, 0:2]
+            )
+            data_dict["gt"] = (
+                torch.cumsum(data_dict["gt"], dim=1) *
+                data_dict["dt"][:, None, None]
+                + data_dict["obs"][:, -1:, 0:2]
+            )
             for k in data_dict.keys():
                 if k[0] == "prob" and type(data_dict[k]) == torch.Tensor:
-                    offset = data_dict['obs'][:, None, -1:,
-                                              0:2] if k[1] == 0 else data_dict['gt'][:, None, k[1]-1:k[1], 0:2]
-                    data_dict[k][..., :2] = torch.cumsum(
-                        data_dict[k][..., :2], dim=2) * data_dict['dt'][:, None, None] + offset
+                    offset = (
+                        data_dict["obs"][:, None, -1:, 0:2]
+                        if k[1] == 0
+                        else data_dict["gt"][:, None, k[1] - 1: k[1], 0:2]
+                    )
+                    data_dict[k][..., :2] = (
+                        torch.cumsum(data_dict[k][..., :2], dim=2)
+                        * data_dict["dt"][:, None, None, None]
+                        + offset
+                    )
 
         return data_dict
 
     def unstandardize(self, data_dict: Dict) -> Dict:
         # assume we observed positions
-        assert 'acceleration' not in self.state.keys()
-        if 'position' in self.state.keys():
-            assert torch.all(data_dict['gt_st'] * self.std +
-                             data_dict['obs'][:, -1:, 0:2] - data_dict['gt'] < 1e-5)
-        elif 'velocity' in self.state.keys():
-            assert torch.all(data_dict['gt_st'] *
-                             self.std - data_dict['gt'] < 1e-5)
+        assert "acceleration" not in self.state.keys()
+        if "position" in self.state.keys():
+            assert torch.all(
+                data_dict["gt_st"] * self.std
+                + data_dict["obs"][:, -1:, 0:2]
+                - data_dict["gt"]
+                < 1e-5
+            )
+        elif "velocity" in self.state.keys():
+            assert torch.all(data_dict["gt_st"] *
+                             self.std - data_dict["gt"] < 1e-5)
 
-        data_dict[('pred', 0)] = data_dict[('pred_st', 0)] * self.std
+        data_dict[("pred", 0)] = data_dict[("pred_st", 0)] * self.std
 
         for k in list(data_dict.keys()):
             if k[0] == "prob_st" and type(data_dict[k]) == torch.Tensor:
                 data_dict[("prob", k[1])] = data_dict[k].clone()
                 data_dict[("prob", k[1])][..., :2] *= self.std
-                data_dict[("prob", k[1])][..., -
-                                          1] = torch.exp(data_dict[("prob", k[1])][..., -1])
+                data_dict[("prob", k[1])][..., -1] = torch.exp(
+                    data_dict[("prob", k[1])][..., -1]
+                )
 
         return data_dict
 
@@ -127,7 +160,8 @@ class TP_metrics(object):
         X, Y = data_dict["grid"]
         coords = torch.Tensor(np.array([X.flatten(), Y.flatten()]).T).cuda()
         coordsSqr = torch.sum(coords**2, dim=1)
-        M = coordsSqr[:, None] + coordsSqr[None, :] - 2*coords.matmul(coords.T)
+        M = coordsSqr[:, None] + coordsSqr[None, :] - \
+            2 * coords.matmul(coords.T)
         M[M < 0] = 0
         M = torch.sqrt(M)
         emd = []
@@ -135,7 +169,8 @@ class TP_metrics(object):
             emd_ = []
             for t in range(prob.shape[-1]):
                 emd__ = ot.sinkhorn2(
-                    prob[0, :, t], gt_prob[0, :, t], M, 1.0, warn=False)
+                    prob[0, :, t], gt_prob[0, :, t], M, 1.0, warn=False
+                )
                 print(emd__)
                 emd_.append(emd__)
             emd.append(torch.Tensor(emd_).mean(dim=-1))

@@ -162,12 +162,16 @@ class fastpredNF_TP(nn.Module):
         ].clone()
 
         base_log_prob = self.flow.base_dist(
-            data_dict["gt_st"][:, time_step - 1], step=time_step
-        ).log_prob(data_dict[("prob_st", 0)][:, :, time_step - 1, :2])
+            (data_dict["gt_st"][:, time_step - 1].unsqueeze(1)), step=time_step
+        ).log_prob(
+            (data_dict[("prob_st", 0)][:, :, time_step - 1, :2])
+        )  # Log prob expects a [10, 10000,2] but we were giving a [10,2]
         base_log_prob = torch.sum(base_log_prob, dim=-1)
         base_prob = base_log_prob.exp()
         base_log_prob = (
-            base_prob / base_prob.sum(dim=1) * self.base_prob_normalizer_tmp
+            base_prob
+            / base_prob.sum(dim=1, keepdim=True)
+            * self.base_prob_normalizer_tmp
         ).log()
         log_prob = base_log_prob[:, :, None] + torch.cumsum(
             self.ldjs_tmp[:, :, time_step:], dim=0
@@ -353,6 +357,7 @@ class Trajectron_encoder(nn.Module):
 
         from data.TP.trajectron_dataset import hypers
         from .mgcvae import MultimodalGenerativeCVAE
+        from data.TP.environment import environment
 
         import dill
 

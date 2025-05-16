@@ -36,19 +36,25 @@ class TP_Visualizer(Visualizer):
         self.dataset = cfg.DATA.DATASET_NAME
 
         import dill
-        env_path = Path(cfg.DATA.PATH) / cfg.DATA.TASK / \
-            "processed_data" / f"{cfg.DATA.DATASET_NAME}_test.pkl"
-        with open(env_path, 'rb') as f:
-            self.env = dill.load(f, encoding='latin1')
+
+        env_path = (
+            Path(cfg.DATA.PATH)
+            / cfg.DATA.TASK
+            / "processed_data"
+            / f"{cfg.DATA.DATASET_NAME}_test.pkl"
+        )
+        with open(env_path, "rb") as f:
+            self.env = dill.load(f, encoding="latin1")
 
         # TODO: params for other nodes
         from data.TP.trajectron_dataset import hypers
-        node = 'PEDESTRIAN'
+
+        node = "PEDESTRIAN"
         self.state = hypers[cfg.DATA.TP.PRED_STATE][node]
         mean, std = self.env.get_standardize_params(self.state, node)
         self.mean = mean
         self.std = std
-        self.std = self.env.attention_radius[('PEDESTRIAN', 'PEDESTRIAN')]
+        self.std = self.env.attention_radius[("PEDESTRIAN", "PEDESTRIAN")]
 
         self.num_grid = 100
         if hasattr(self.env, "gt_dist"):
@@ -59,12 +65,12 @@ class TP_Visualizer(Visualizer):
         self.observe_length = cfg.DATA.OBSERVE_LENGTH
 
     def __call__(self, dict_list: List[Dict]) -> None:
-        index = dict_list[0]['index']
+        index = dict_list[0]["index"]
         min_pos, max_pos = self.get_minmax(index)
 
         # (batch, timesteps, [x,y])
-        obs = self.to_numpy(dict_list[0]['obs'][:, :, 0:2])
-        gt = self.to_numpy(dict_list[0]['gt'])
+        obs = self.to_numpy(dict_list[0]["obs"][:, :, 0:2])
+        gt = self.to_numpy(dict_list[0]["gt"])
 
         pred = []
         for d in dict_list:
@@ -75,12 +81,14 @@ class TP_Visualizer(Visualizer):
         # (batch, timesteps, num_trials, [x,y])
         pred = np.concatenate(pred, axis=2)
         for i in range(len(obs)):
-            self.plot2d_trajectories(obs[i:i+1],
-                                     gt[i:i+1],
-                                     pred[i:i+1],
-                                     index[i],
-                                     max_pos,
-                                     min_pos)
+            self.plot2d_trajectories(
+                obs[i: i + 1],
+                gt[i: i + 1],
+                pred[i: i + 1],
+                index[i],
+                max_pos,
+                min_pos,
+            )
 
         if ("prob", 0) in dict_list[0]:
             path_density_map = self.output_dir / "density_map"
@@ -95,32 +103,41 @@ class TP_Visualizer(Visualizer):
 
                     bs, _, timesteps = prob.shape
 
-                    obs = self.to_numpy(dict_list[0]['obs'])[..., :2]
-                    gt = self.to_numpy(dict_list[0]['gt'])
+                    obs = self.to_numpy(dict_list[0]["obs"])[..., :2]
+                    gt = self.to_numpy(dict_list[0]["gt"])
                     traj = np.concatenate([obs, gt], axis=1)
-                    obs = traj[:, :self.observe_length + update_step]
-                    gt = traj[:, self.observe_length + update_step-1:]
+                    obs = traj[:, : self.observe_length + update_step]
+                    gt = traj[:, self.observe_length + update_step - 1:]
 
                     zz_list = []
                     for j in range(timesteps):
                         zz = prob[0, :, j].reshape(xx.shape)
                         zz /= np.max(zz)
-                        plot_density(xx, yy, zz, path=path_density_map / f"update{update_step}_{index[i][0]}_{index[i][1]}_{index[i][2].strip('PEDESTRIAN/')}_{j}.png",
-                                     traj=[obs[i], gt[i]])
+                        plot_density(
+                            xx,
+                            yy,
+                            zz,
+                            path=path_density_map
+                            / f"update{update_step}_{index[i][0]}_{index[i][1]}_{index[i][2].strip('PEDESTRIAN/')}_{j}.png",
+                            traj=[obs[i], gt[i]],
+                        )
                         zz_list.append(zz)
 
                     zz_sum = sum(zz_list)
-                    plot_density(xx, yy, zz_sum,
-                                 path=path_density_map /
-                                 f"update{update_step}_{index[i][0]}_{index[i][1]}_{index[i][2].strip('PEDESTRIAN/')}_sum.png",
-                                 traj=[obs[i], gt[i]])
+                    plot_density(
+                        xx,
+                        yy,
+                        zz_sum,
+                        path=path_density_map
+                        / f"update{update_step}_{index[i][0]}_{index[i][1]}_{index[i][2].strip('PEDESTRIAN/')}_sum.png",
+                        traj=[obs[i], gt[i]],
+                    )
 
     def prob_to_grid(self, dict_list: List[Dict]) -> List:
         if ("prob", 0) in dict_list[0]:
-            index = dict_list[0]['index']
+            index = dict_list[0]["index"]
             min_pos, max_pos = self.get_minmax(index)
             xx, yy = self.get_grid(index)
-            print(f"DEBUG: prob_to_grid - xx.shape: {xx.shape}, yy.shape: {yy.shape}")
 
             for data_dict in dict_list:
                 data_dict["grid"] = [xx, yy]
@@ -133,20 +150,35 @@ class TP_Visualizer(Visualizer):
                             batch, _, timesteps, _ = prob.shape
 
                             zz_batch = []
-                            for i in range(batch): #CHANGED N_JOBS TO 1 instead of timesteps, reduces parallelism
-                                zz_timesteps = Parallel(n_jobs=1)(delayed(self.griddata_on_cluster)(i, prob, xx, yy, max_pos, min_pos, j)
-                                                                          for j in range(timesteps))
-                                #zz_timesteps = [self.griddata_on_cluster(i, prob, xx, yy, max_pos, min_pos, j) for j in range(timesteps)]
-                                zz_timesteps = np.stack(
-                                    zz_timesteps, axis=-1).reshape(-1, timesteps)
+                            for i in range(
+                                batch
+                            ):  # CHANGED N_JOBS TO 1 instead of timesteps, reduces parallelism
+                                zz_timesteps = Parallel(n_jobs=1)(
+                                    delayed(self.griddata_on_cluster)(
+                                        i, prob, xx, yy, max_pos, min_pos, j
+                                    )
+                                    for j in range(timesteps)
+                                )
+                                # zz_timesteps = [self.griddata_on_cluster(i, prob, xx, yy, max_pos, min_pos, j) for j in range(timesteps)]
+                                zz_timesteps = np.stack(zz_timesteps, axis=-1).reshape(
+                                    -1, timesteps
+                                )
                                 zz_batch.append(zz_timesteps)
 
                             zz_batch = np.stack(zz_batch, axis=0)
                             data_dict[k] = zz_batch
 
-                        elif self.model_name == "Trajectron" or self.model_name == "GT_Dist":
-                            value = torch.Tensor(np.array([xx.flatten(), yy.flatten()])).transpose(0, 1)[
-                                None, :, None].tile(1, 1, prob.mus.shape[2], 1).cuda()
+                        elif (
+                            self.model_name == "Trajectron"
+                            or self.model_name == "GT_Dist"
+                        ):
+                            value = (
+                                torch.Tensor(
+                                    np.array([xx.flatten(), yy.flatten()]))
+                                .transpose(0, 1)[None, :, None]
+                                .tile(1, 1, prob.mus.shape[2], 1)
+                                .cuda()
+                            )
                             zz_batch = torch.exp(prob.log_prob(value))
                             data_dict[k] = self.to_numpy(zz_batch)
 
@@ -155,8 +187,12 @@ class TP_Visualizer(Visualizer):
                             for i in range(len(prob)):
                                 zz_timesteps = []
                                 for kernel in prob[i]:
-                                    zz = kernel(torch.Tensor(
-                                        np.array([xx.flatten(), yy.flatten()]).T).cuda())
+                                    zz = kernel(
+                                        torch.Tensor(
+                                            np.array(
+                                                [xx.flatten(), yy.flatten()]).T
+                                        ).cuda()
+                                    )
                                     zz_timesteps.append(zz.cpu().numpy())
                                 zz_timesteps = np.stack(zz_timesteps, axis=1)
                                 zz_batch.append(zz_timesteps)
@@ -166,53 +202,82 @@ class TP_Visualizer(Visualizer):
                         if ("gt_traj_log_prob", k[1]) not in data_dict:
                             gt = data_dict["gt"][:, k[1]:].cpu()
                             timesteps = gt.shape[1]
-                            #Below is change for RegularGridInterpolator
+                            # Below is change for RegularGridInterpolator
                             gt_traj_prob = []
                             for t in range(timesteps):
-                                zz_flat = zz_batch[0, :, t]  # Remove batch dimension
-                                zz_grid = zz_flat.reshape(xx.shape)  # Shape (100, 100)
-                                interpolator = RegularGridInterpolator((yy[:, 0], xx[0, :]), zz_grid)
+                                # Remove batch dimension
+                                zz_flat = zz_batch[0, :, t]
+                                zz_grid = zz_flat.reshape(
+                                    xx.shape)  # Shape (100, 100)
+                                interpolator = RegularGridInterpolator(
+                                    (xx[0, :], yy[:, 0]), zz_grid
+                                )
                                 points = gt[:, t, :2].numpy()
                                 interpolated_values = interpolator(points)
                                 gt_traj_prob.append(interpolated_values)
 
                             gt_traj_prob = np.array(gt_traj_prob)
-                            #Above is change for RegularGridInterpolator
+                            # Above is change for RegularGridInterpolator
                             gt_traj_log_prob = torch.log(
-                                torch.Tensor(gt_traj_prob)).squeeze()
-                            if torch.sum(torch.isnan(gt_traj_log_prob) + torch.isinf(gt_traj_log_prob)) > 0:
-                                mask = torch.isnan(gt_traj_log_prob) + torch.isinf(gt_traj_log_prob)
+                                torch.Tensor(gt_traj_prob)
+                            ).squeeze()
+                            if (
+                                torch.sum(
+                                    torch.isnan(gt_traj_log_prob)
+                                    + torch.isinf(gt_traj_log_prob)
+                                )
+                                > 0
+                            ):
+                                mask = torch.isnan(gt_traj_log_prob) + torch.isinf(
+                                    gt_traj_log_prob
+                                )
                                 valid_values = gt_traj_log_prob[~mask]
                                 if valid_values.numel() > 0:
                                     value = torch.min(valid_values)
                                 else:
                                     value = torch.tensor(-1e8)
                                 gt_traj_log_prob = torch.nan_to_num(
-                                    gt_traj_log_prob, nan=value, neginf=value)
-                            data_dict[("gt_traj_log_prob", k[1])
-                                      ] = gt_traj_log_prob[None]
+                                    gt_traj_log_prob, nan=value, neginf=value
+                                )
+                            data_dict[("gt_traj_log_prob", k[1])] = gt_traj_log_prob[
+                                None
+                            ]
 
                 if self.gt_dist is not None:  # assume simfork
                     bs, timesteps, d = data_dict["gt"].shape
                     split = True
-                    value = torch.Tensor(np.array([xx.flatten(), yy.flatten()])).transpose(0, 1)[
-                        None, :, None].tile(1, 1, timesteps, 1).cuda()
+                    value = (
+                        torch.Tensor(np.array([xx.flatten(), yy.flatten()]))
+                        .transpose(0, 1)[None, :, None]
+                        .tile(1, 1, timesteps, 1)
+                        .cuda()
+                    )
                     if split:
                         gaussians = []
                         for i in range(len(self.gt_dist)):
                             gt_base_traj = torch.Tensor(
-                                self.gt_dist[[i] * bs, -timesteps:]).cuda()
+                                self.gt_dist[[i] * bs, -timesteps:]
+                            ).cuda()
                             gaussians.append(
-                                Normal(gt_base_traj[..., :2], gt_base_traj[..., 2:]))
+                                Normal(gt_base_traj[..., :2],
+                                       gt_base_traj[..., 2:])
+                            )
                         data_dict["gt_prob"] = sum(
-                            [torch.exp(g.log_prob(value).sum(dim=-1)) for g in gaussians])
+                            [
+                                torch.exp(g.log_prob(value).sum(dim=-1))
+                                for g in gaussians
+                            ]
+                        )
                     else:
                         gt_base_traj = torch.Tensor(
-                            self.gt_dist[data_dict["gt"][:, -1, 1] < 0, -timesteps:]).cuda()
+                            self.gt_dist[data_dict["gt"]
+                                         [:, -1, 1] < 0, -timesteps:]
+                        ).cuda()
                         gaussian = Normal(
                             gt_base_traj[:, :2], gt_base_traj[:, 2:])
                         data_dict["gt_prob"] = torch.exp(
-                            gaussian.log_prob(value).sum(dim=-1))
+                            gaussian.log_prob(value).sum(dim=-1)
+                        )
 
         return dict_list
 
@@ -235,28 +300,36 @@ class TP_Visualizer(Visualizer):
         prob_ = prob[i, :, j]
         prob_ = prob_[np.where(np.isinf(prob_).sum(axis=1) == 0)]
         prob_ = prob_[np.where(np.isnan(prob_).sum(axis=1) == 0)]
-        lnk = linkage(prob_[:, :-1],
-                      method='single',
-                      metric='euclidean')
-        idx_cls = fcluster(lnk, t=np.linalg.norm(max_pos-min_pos)*0.003,
-                           criterion='distance')
+        lnk = linkage(prob_[:, :-1], method="single", metric="euclidean")
+        idx_cls = fcluster(
+            lnk, t=np.linalg.norm(max_pos - min_pos) * 0.003, criterion="distance"
+        )
         idx_cls -= 1
 
         zz_ = []
-        for c in range(np.max(idx_cls)+1):
+        for c in range(np.max(idx_cls) + 1):
             try:
-                zz_.append(griddata(prob_[idx_cls == c, :-1],
-                                    prob_[idx_cls == c, -1],
-                                    (xx, yy), method='linear',
-                                    fill_value=0.0)
-                           )
+                zz_.append(
+                    griddata(
+                        prob_[idx_cls == c, :-1],
+                        prob_[idx_cls == c, -1],
+                        (xx, yy),
+                        method="linear",
+                        fill_value=0.0,
+                    )
+                )
             except:
                 pass
 
         zz = sum(zz_)
 
-        intp = RBFInterpolator(np.array([xx, yy]).reshape(
-            2, -1).T, zz.flatten(), smoothing=10, kernel='linear', neighbors=8)
+        intp = RBFInterpolator(
+            np.array([xx, yy]).reshape(2, -1).T,
+            zz.flatten(),
+            smoothing=10,
+            kernel="linear",
+            neighbors=8,
+        )
         zz = intp(np.array([xx, yy]).reshape(2, -1).T).reshape(xx.shape)
 
         prob_ = prob[i, :, j, -1]
@@ -264,13 +337,15 @@ class TP_Visualizer(Visualizer):
         zz = np.clip(zz, a_min=0.0, a_max=np.percentile(prob_, 95))
         return zz
 
-    def plot2d_trajectories(self,
-                            obs:  np.ndarray,
-                            gt:   np.ndarray,
-                            pred: np.ndarray,
-                            index: Tuple,
-                            max_pos: np.ndarray,
-                            min_pos: np.ndarray) -> None:
+    def plot2d_trajectories(
+        self,
+        obs: np.ndarray,
+        gt: np.ndarray,
+        pred: np.ndarray,
+        index: Tuple,
+        max_pos: np.ndarray,
+        min_pos: np.ndarray,
+    ) -> None:
         """plot 2d trajectories
 
         Args:
@@ -281,44 +356,66 @@ class TP_Visualizer(Visualizer):
         """
 
         N_seqs, N_timesteps, N_trials, N_dim = pred.shape
-        gt_vis = np.zeros([N_seqs, N_timesteps+1, N_dim])
+        gt_vis = np.zeros([N_seqs, N_timesteps + 1, N_dim])
         gt_vis[:, 0] = obs[:, -1]
         gt_vis[:, 1:] = gt
 
-        pred_vis = np.zeros([N_seqs, N_timesteps+1, N_trials, N_dim])
+        pred_vis = np.zeros([N_seqs, N_timesteps + 1, N_trials, N_dim])
         # (num_seqs, num_dim) -> (num_seqs, 1, num_dim)
         pred_vis[:, 0] = obs[:, -1][:, None]
         pred_vis[:, 1:] = pred
 
         f, ax = plt.subplots(1, 1)
-        ax.set_aspect('equal', adjustable='box')
+        ax.set_aspect("equal", adjustable="box")
         ax.set_xlim(min_pos[0], max_pos[0])
         ax.set_ylim(min_pos[1], max_pos[1])
 
         for j in range(N_seqs):
-            sns.lineplot(x=obs[j, :, 0], y=obs[j, :, 1], color='black',
-                         legend='brief', label="obs", marker='o')
-            sns.lineplot(x=gt_vis[j, :, 0], y=gt_vis[j, :, 1],
-                         color='blue', legend='brief', label="GT", marker='o')
+            sns.lineplot(
+                x=obs[j, :, 0],
+                y=obs[j, :, 1],
+                color="black",
+                legend="brief",
+                label="obs",
+                marker="o",
+            )
+            sns.lineplot(
+                x=gt_vis[j, :, 0],
+                y=gt_vis[j, :, 1],
+                color="blue",
+                legend="brief",
+                label="GT",
+                marker="o",
+            )
             for i in range(pred.shape[2]):
                 if i == 0:
-                    sns.lineplot(x=pred_vis[j, :, i, 0], y=pred_vis[j, :, i, 1],
-                                 color='green', legend='brief', label="pred", marker='o')
+                    sns.lineplot(
+                        x=pred_vis[j, :, i, 0],
+                        y=pred_vis[j, :, i, 1],
+                        color="green",
+                        legend="brief",
+                        label="pred",
+                        marker="o",
+                    )
                 else:
                     sns.lineplot(
-                        x=pred_vis[j, :, i, 0], y=pred_vis[j, :, i, 1], color='green', marker='o')
+                        x=pred_vis[j, :, i, 0],
+                        y=pred_vis[j, :, i, 1],
+                        color="green",
+                        marker="o",
+                    )
 
-        img_path = self.output_dir / \
-            f"{index[0]}_{index[1]}_{index[2].strip('PEDESTRIAN/')}.png"
+        img_path = (
+            self.output_dir
+            / f"{index[0]}_{index[1]}_{index[2].strip('PEDESTRIAN/')}.png"
+        )
         plt.savefig(img_path)
         plt.close()
 
 
 def plot2d_trajectories_samples(
-        obs:  np.ndarray,
-        gt:   np.ndarray,
-        max_pos: np.ndarray,
-        min_pos: np.ndarray) -> None:
+    obs: np.ndarray, gt: np.ndarray, max_pos: np.ndarray, min_pos: np.ndarray
+) -> None:
     """plot 2d trajectories
 
     Args:
@@ -332,26 +429,39 @@ def plot2d_trajectories_samples(
     _, N_timesteps, N_dim = gt[0].shape
 
     f, ax = plt.subplots(1, 1)
-    ax.set_aspect('equal', adjustable='box')
+    ax.set_aspect("equal", adjustable="box")
     ax.set_xlim(min_pos[0], max_pos[0])
     ax.set_ylim(min_pos[1], max_pos[1])
 
     for j in range(N_seqs):
-        gt_vis = np.zeros([N_timesteps+1, N_dim])
+        gt_vis = np.zeros([N_timesteps + 1, N_dim])
         gt_vis[0] = obs[j][0, -1]
         gt_vis[1:] = gt[j][0]
         if j == 0:
-            sns.lineplot(x=obs[j][0, :, 0], y=obs[j][0, :, 1], color='green',
-                         legend='brief', label="obs", marker='o')
-            sns.lineplot(x=gt_vis[:, 0], y=gt_vis[:, 1],
-                         color='black', legend='brief', label="GT", marker='o')
+            sns.lineplot(
+                x=obs[j][0, :, 0],
+                y=obs[j][0, :, 1],
+                color="green",
+                legend="brief",
+                label="obs",
+                marker="o",
+            )
+            sns.lineplot(
+                x=gt_vis[:, 0],
+                y=gt_vis[:, 1],
+                color="black",
+                legend="brief",
+                label="GT",
+                marker="o",
+            )
         else:
-            sns.lineplot(x=obs[j][0, :, 0], y=obs[j][0, :, 1], color='green',
-                         marker='o')
+            sns.lineplot(
+                x=obs[j][0, :, 0], y=obs[j][0, :, 1], color="green", marker="o"
+            )
             sns.lineplot(x=gt_vis[:, 0], y=gt_vis[:, 1],
-                         color='black', marker='o')
+                         color="black", marker="o")
 
     img_path = "gts.png"
-    plt.axis('off')
-    plt.savefig(img_path, bbox_inches='tight')
+    plt.axis("off")
+    plt.savefig(img_path, bbox_inches="tight")
     plt.close()

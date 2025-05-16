@@ -1,4 +1,4 @@
-/home/user/.pyenv/versions/flowchain-implementation/lib/python3.12/site-packages/ncls/__init__.py:2: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+/home/emiliano/.pyenv/versions/flowchain-FL-3.12/lib/python3.12/site-packages/ncls/__init__.py:2: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
   import pkg_resources
 [93mWARNING [0m:   DEPRECATED FEATURE: flwr.client.start_client() is deprecated.
 	Instead, use the `flower-supernode` CLI command to start a SuperNode as shown below:
@@ -15,101 +15,25 @@
             entirely in future versions of Flower.
         
 [92mINFO [0m:      
-[92mINFO [0m:      Received: get_parameters message ae3b1321-2951-470c-9f81-fae221961466
+[92mINFO [0m:      Received: get_parameters message 1f1a8425-2e37-4895-8e9f-8adc7cc99e52
 [92mINFO [0m:      Sent reply
 [92mINFO [0m:      
-[92mINFO [0m:      Received: train message e1c39256-4259-475f-8b03-30da6ce9dcff
-Configuration file loaded from config/TP/FlowChain/hotel.yml.
-output dirname: output/config/TP/FlowChain/hotel
+[92mINFO [0m:      Received: train message 575b671f-e657-4aa5-a020-4c215e49b746
+INFO: Added to sys.path for dill: /home/emiliano/Documents/Flowchain-training/flowchain-implementation/src/data/TP
+Configuration file loaded from config/TP/FlowChain/mot.yml.
+output dirname: output/config/TP/FlowChain/mot
 [Client None] fit() called — loading parameters, about to train...
-[Client None]  train loader size: 28  |  batch size: 128
+[Client None]  train loader size: 50  |  batch size: 128
 [Client] Start local training for 1 epoch(s)
-Epoch 1/1:   0%|          | 0/28 [00:00<?, ?it/s]Epoch 1/1:   0%|          | 0/28 [00:00<?, ?it/s, loss=44.7938]Epoch 1/1:   4%|▎         | 1/28 [00:00<00:10,  2.60it/s, loss=44.7938]Epoch 1/1:   4%|▎         | 1/28 [00:00<00:10,  2.60it/s, loss=41.0990]Epoch 1/1:   7%|▋         | 2/28 [00:00<00:06,  3.74it/s, loss=41.0990]Epoch 1/1:   7%|▋         | 2/28 [00:00<00:06,  3.74it/s, loss=36.6258]Epoch 1/1:  11%|█         | 3/28 [00:00<00:05,  4.41it/s, loss=36.6258]Epoch 1/1:  11%|█         | 3/28 [00:00<00:05,  4.41it/s, loss=32.6810]Epoch 1/1:  14%|█▍        | 4/28 [00:00<00:05,  4.78it/s, loss=32.6810]Epoch 1/1:  14%|█▍        | 4/28 [00:01<00:05,  4.78it/s, loss=28.3931]Epoch 1/1:  18%|█▊        | 5/28 [00:01<00:04,  5.06it/s, loss=28.3931]Epoch 1/1:  18%|█▊        | 5/28 [00:01<00:04,  5.06it/s, loss=26.4270]Epoch 1/1:  21%|██▏       | 6/28 [00:01<00:04,  5.24it/s, loss=26.4270]Epoch 1/1:  21%|██▏       | 6/28 [00:01<00:04,  5.24it/s, loss=22.4971]Epoch 1/1:  25%|██▌       | 7/28 [00:01<00:03,  5.34it/s, loss=22.4971]Epoch 1/1:  25%|██▌       | 7/28 [00:01<00:03,  5.34it/s, loss=21.4544]Epoch 1/1:  29%|██▊       | 8/28 [00:01<00:03,  5.37it/s, loss=21.4544]Epoch 1/1:  29%|██▊       | 8/28 [00:01<00:03,  5.37it/s, loss=19.4713]Epoch 1/1:  32%|███▏      | 9/28 [00:01<00:03,  5.47it/s, loss=19.4713]Epoch 1/1:  32%|███▏      | 9/28 [00:02<00:03,  5.47it/s, loss=16.8225]Epoch 1/1:  36%|███▌      | 10/28 [00:02<00:03,  5.49it/s, loss=16.8225]Epoch 1/1:  36%|███▌      | 10/28 [00:02<00:03,  5.49it/s, loss=16.2254]Epoch 1/1:  39%|███▉      | 11/28 [00:02<00:03,  5.52it/s, loss=16.2254]Epoch 1/1:  39%|███▉      | 11/28 [00:02<00:03,  5.52it/s, loss=15.2257]Epoch 1/1:  43%|████▎     | 12/28 [00:02<00:02,  5.51it/s, loss=15.2257]Epoch 1/1:  43%|████▎     | 12/28 [00:02<00:02,  5.51it/s, loss=14.1763]Epoch 1/1:  46%|████▋     | 13/28 [00:02<00:02,  5.56it/s, loss=14.1763]Epoch 1/1:  46%|████▋     | 13/28 [00:02<00:02,  5.56it/s, loss=12.4453]Epoch 1/1:  50%|█████     | 14/28 [00:02<00:02,  5.53it/s, loss=12.4453]Epoch 1/1:  50%|█████     | 14/28 [00:02<00:02,  5.53it/s, loss=11.1951]Epoch 1/1:  54%|█████▎    | 15/28 [00:02<00:02,  5.60it/s, loss=11.1951]Epoch 1/1:  54%|█████▎    | 15/28 [00:03<00:02,  5.60it/s, loss=10.7589]Epoch 1/1:  57%|█████▋    | 16/28 [00:03<00:02,  5.63it/s, loss=10.7589]Epoch 1/1:  57%|█████▋    | 16/28 [00:03<00:02,  5.63it/s, loss=10.4413]Epoch 1/1:  61%|██████    | 17/28 [00:03<00:01,  5.61it/s, loss=10.4413]Epoch 1/1:  61%|██████    | 17/28 [00:03<00:01,  5.61it/s, loss=9.8027] Epoch 1/1:  64%|██████▍   | 18/28 [00:03<00:01,  5.54it/s, loss=9.8027]Epoch 1/1:  64%|██████▍   | 18/28 [00:03<00:01,  5.54it/s, loss=8.9082]Epoch 1/1:  68%|██████▊   | 19/28 [00:03<00:01,  5.55it/s, loss=8.9082]Epoch 1/1:  68%|██████▊   | 19/28 [00:03<00:01,  5.55it/s, loss=8.2464]Epoch 1/1:  71%|███████▏  | 20/28 [00:03<00:01,  5.54it/s, loss=8.2464]Epoch 1/1:  71%|███████▏  | 20/28 [00:03<00:01,  5.54it/s, loss=7.6670]Epoch 1/1:  75%|███████▌  | 21/28 [00:03<00:01,  5.51it/s, loss=7.6670]Epoch 1/1:  75%|███████▌  | 21/28 [00:04<00:01,  5.51it/s, loss=7.6330]Epoch 1/1:  79%|███████▊  | 22/28 [00:04<00:01,  5.54it/s, loss=7.6330]Epoch 1/1:  79%|███████▊  | 22/28 [00:04<00:01,  5.54it/s, loss=7.3673]Epoch 1/1:  82%|████████▏ | 23/28 [00:04<00:00,  5.50it/s, loss=7.3673]Epoch 1/1:  82%|████████▏ | 23/28 [00:04<00:00,  5.50it/s, loss=7.0092]Epoch 1/1:  86%|████████▌ | 24/28 [00:04<00:00,  5.50it/s, loss=7.0092]Epoch 1/1:  86%|████████▌ | 24/28 [00:04<00:00,  5.50it/s, loss=6.7047]Epoch 1/1:  89%|████████▉ | 25/28 [00:04<00:00,  5.51it/s, loss=6.7047]Epoch 1/1:  89%|████████▉ | 25/28 [00:04<00:00,  5.51it/s, loss=5.8863]Epoch 1/1:  93%|█████████▎| 26/28 [00:04<00:00,  5.53it/s, loss=5.8863]Epoch 1/1:  93%|█████████▎| 26/28 [00:05<00:00,  5.53it/s, loss=5.6870]Epoch 1/1:  96%|█████████▋| 27/28 [00:05<00:00,  5.60it/s, loss=5.6870]Epoch 1/1:  96%|█████████▋| 27/28 [00:05<00:00,  5.60it/s, loss=5.5875]Epoch 1/1: 100%|██████████| 28/28 [00:05<00:00,  5.60it/s, loss=5.5875]                                                                       [92mINFO [0m:      Sent reply
+Epoch 1/1:   0%|          | 0/50 [00:00<?, ?it/s]Epoch 1/1:   0%|          | 0/50 [00:00<?, ?it/s, loss=272.4066]Epoch 1/1:   2%|▏         | 1/50 [00:00<00:37,  1.31it/s, loss=272.4066]Epoch 1/1:   2%|▏         | 1/50 [00:01<00:37,  1.31it/s, loss=332.7839]Epoch 1/1:   4%|▍         | 2/50 [00:01<00:29,  1.61it/s, loss=332.7839]Epoch 1/1:   4%|▍         | 2/50 [00:01<00:29,  1.61it/s, loss=2115.1094]Epoch 1/1:   6%|▌         | 3/50 [00:01<00:27,  1.73it/s, loss=2115.1094]Epoch 1/1:   6%|▌         | 3/50 [00:02<00:27,  1.73it/s, loss=1519.6111]Epoch 1/1:   8%|▊         | 4/50 [00:02<00:25,  1.78it/s, loss=1519.6111]Epoch 1/1:   8%|▊         | 4/50 [00:02<00:25,  1.78it/s, loss=346.0138] Epoch 1/1:  10%|█         | 5/50 [00:02<00:24,  1.83it/s, loss=346.0138]Epoch 1/1:  10%|█         | 5/50 [00:03<00:24,  1.83it/s, loss=997.2209]Epoch 1/1:  12%|█▏        | 6/50 [00:03<00:23,  1.85it/s, loss=997.2209]Epoch 1/1:  12%|█▏        | 6/50 [00:03<00:23,  1.85it/s, loss=650.7598]Epoch 1/1:  14%|█▍        | 7/50 [00:03<00:23,  1.86it/s, loss=650.7598]Epoch 1/1:  14%|█▍        | 7/50 [00:04<00:23,  1.86it/s, loss=150.6471]Epoch 1/1:  16%|█▌        | 8/50 [00:04<00:22,  1.87it/s, loss=150.6471]Epoch 1/1:  16%|█▌        | 8/50 [00:04<00:22,  1.87it/s, loss=1890.8301]Epoch 1/1:  18%|█▊        | 9/50 [00:04<00:21,  1.89it/s, loss=1890.8301]Epoch 1/1:  18%|█▊        | 9/50 [00:05<00:21,  1.89it/s, loss=228.4753] Epoch 1/1:  20%|██        | 10/50 [00:05<00:21,  1.90it/s, loss=228.4753]Epoch 1/1:  20%|██        | 10/50 [00:06<00:21,  1.90it/s, loss=175.7351]Epoch 1/1:  22%|██▏       | 11/50 [00:06<00:20,  1.91it/s, loss=175.7351]Epoch 1/1:  22%|██▏       | 11/50 [00:06<00:20,  1.91it/s, loss=2768.5955]Epoch 1/1:  24%|██▍       | 12/50 [00:06<00:19,  1.90it/s, loss=2768.5955]Epoch 1/1:  24%|██▍       | 12/50 [00:07<00:19,  1.90it/s, loss=179.0111] Epoch 1/1:  26%|██▌       | 13/50 [00:07<00:19,  1.90it/s, loss=179.0111]Epoch 1/1:  26%|██▌       | 13/50 [00:07<00:19,  1.90it/s, loss=107.2242]Epoch 1/1:  28%|██▊       | 14/50 [00:07<00:18,  1.90it/s, loss=107.2242]Epoch 1/1:  28%|██▊       | 14/50 [00:08<00:18,  1.90it/s, loss=352.7437]Epoch 1/1:  30%|███       | 15/50 [00:08<00:18,  1.91it/s, loss=352.7437]Epoch 1/1:  30%|███       | 15/50 [00:08<00:18,  1.91it/s, loss=609.2711]Epoch 1/1:  32%|███▏      | 16/50 [00:08<00:17,  1.91it/s, loss=609.2711]Epoch 1/1:  32%|███▏      | 16/50 [00:09<00:17,  1.91it/s, loss=396.6354]Epoch 1/1:  34%|███▍      | 17/50 [00:09<00:17,  1.91it/s, loss=396.6354]Epoch 1/1:  34%|███▍      | 17/50 [00:09<00:17,  1.91it/s, loss=252.7716]Epoch 1/1:  36%|███▌      | 18/50 [00:09<00:16,  1.91it/s, loss=252.7716]Epoch 1/1:  36%|███▌      | 18/50 [00:10<00:16,  1.91it/s, loss=635.0505]Epoch 1/1:  38%|███▊      | 19/50 [00:10<00:16,  1.90it/s, loss=635.0505]Epoch 1/1:  38%|███▊      | 19/50 [00:10<00:16,  1.90it/s, loss=190.5085]Epoch 1/1:  40%|████      | 20/50 [00:10<00:15,  1.90it/s, loss=190.5085]Epoch 1/1:  40%|████      | 20/50 [00:11<00:15,  1.90it/s, loss=62.5999] Epoch 1/1:  42%|████▏     | 21/50 [00:11<00:15,  1.90it/s, loss=62.5999]Epoch 1/1:  42%|████▏     | 21/50 [00:11<00:15,  1.90it/s, loss=107.9648]Epoch 1/1:  44%|████▍     | 22/50 [00:11<00:14,  1.91it/s, loss=107.9648]Epoch 1/1:  44%|████▍     | 22/50 [00:12<00:14,  1.91it/s, loss=507.5504]Epoch 1/1:  46%|████▌     | 23/50 [00:12<00:14,  1.91it/s, loss=507.5504]Epoch 1/1:  46%|████▌     | 23/50 [00:12<00:14,  1.91it/s, loss=171.6040]Epoch 1/1:  48%|████▊     | 24/50 [00:12<00:13,  1.91it/s, loss=171.6040]Epoch 1/1:  48%|████▊     | 24/50 [00:13<00:13,  1.91it/s, loss=90.8003] Epoch 1/1:  50%|█████     | 25/50 [00:13<00:13,  1.91it/s, loss=90.8003]Epoch 1/1:  50%|█████     | 25/50 [00:13<00:13,  1.91it/s, loss=82.1467]Epoch 1/1:  52%|█████▏    | 26/50 [00:13<00:12,  1.90it/s, loss=82.1467]Epoch 1/1:  52%|█████▏    | 26/50 [00:14<00:12,  1.90it/s, loss=342.7507]Epoch 1/1:  54%|█████▍    | 27/50 [00:14<00:12,  1.91it/s, loss=342.7507]Epoch 1/1:  54%|█████▍    | 27/50 [00:14<00:12,  1.91it/s, loss=167.9634]Epoch 1/1:  56%|█████▌    | 28/50 [00:14<00:11,  1.91it/s, loss=167.9634]Epoch 1/1:  56%|█████▌    | 28/50 [00:15<00:11,  1.91it/s, loss=690.0619]Epoch 1/1:  58%|█████▊    | 29/50 [00:15<00:11,  1.91it/s, loss=690.0619]Epoch 1/1:  58%|█████▊    | 29/50 [00:15<00:11,  1.91it/s, loss=41.1473] Epoch 1/1:  60%|██████    | 30/50 [00:15<00:10,  1.91it/s, loss=41.1473]Epoch 1/1:  60%|██████    | 30/50 [00:16<00:10,  1.91it/s, loss=544.8079]Epoch 1/1:  62%|██████▏   | 31/50 [00:16<00:09,  1.91it/s, loss=544.8079]Epoch 1/1:  62%|██████▏   | 31/50 [00:17<00:09,  1.91it/s, loss=86.4946] Epoch 1/1:  64%|██████▍   | 32/50 [00:17<00:09,  1.91it/s, loss=86.4946]Epoch 1/1:  64%|██████▍   | 32/50 [00:17<00:09,  1.91it/s, loss=66.1047]Epoch 1/1:  66%|██████▌   | 33/50 [00:17<00:08,  1.90it/s, loss=66.1047]Epoch 1/1:  66%|██████▌   | 33/50 [00:18<00:08,  1.90it/s, loss=79.9343]Epoch 1/1:  68%|██████▊   | 34/50 [00:18<00:08,  1.90it/s, loss=79.9343]Epoch 1/1:  68%|██████▊   | 34/50 [00:18<00:08,  1.90it/s, loss=473.7339]Epoch 1/1:  70%|███████   | 35/50 [00:18<00:07,  1.90it/s, loss=473.7339]Epoch 1/1:  70%|███████   | 35/50 [00:19<00:07,  1.90it/s, loss=235.9128]Epoch 1/1:  72%|███████▏  | 36/50 [00:19<00:07,  1.90it/s, loss=235.9128]Epoch 1/1:  72%|███████▏  | 36/50 [00:19<00:07,  1.90it/s, loss=309.9753]Epoch 1/1:  74%|███████▍  | 37/50 [00:19<00:06,  1.90it/s, loss=309.9753]Epoch 1/1:  74%|███████▍  | 37/50 [00:20<00:06,  1.90it/s, loss=111.0438]Epoch 1/1:  76%|███████▌  | 38/50 [00:20<00:06,  1.91it/s, loss=111.0438]Epoch 1/1:  76%|███████▌  | 38/50 [00:20<00:06,  1.91it/s, loss=35.8482] Epoch 1/1:  78%|███████▊  | 39/50 [00:20<00:05,  1.90it/s, loss=35.8482]Epoch 1/1:  78%|███████▊  | 39/50 [00:21<00:05,  1.90it/s, loss=491.3881]Epoch 1/1:  80%|████████  | 40/50 [00:21<00:05,  1.90it/s, loss=491.3881]Epoch 1/1:  80%|████████  | 40/50 [00:21<00:05,  1.90it/s, loss=467.7720]Epoch 1/1:  82%|████████▏ | 41/50 [00:21<00:05,  1.79it/s, loss=467.7720]Epoch 1/1:  82%|████████▏ | 41/50 [00:22<00:05,  1.79it/s, loss=60.5486] Epoch 1/1:  84%|████████▍ | 42/50 [00:22<00:04,  1.82it/s, loss=60.5486]Epoch 1/1:  84%|████████▍ | 42/50 [00:22<00:04,  1.82it/s, loss=462.9849]Epoch 1/1:  86%|████████▌ | 43/50 [00:22<00:03,  1.86it/s, loss=462.9849]Epoch 1/1:  86%|████████▌ | 43/50 [00:23<00:03,  1.86it/s, loss=438.2634]Epoch 1/1:  88%|████████▊ | 44/50 [00:23<00:03,  1.87it/s, loss=438.2634]Epoch 1/1:  88%|████████▊ | 44/50 [00:23<00:03,  1.87it/s, loss=486.8741]Epoch 1/1:  90%|█████████ | 45/50 [00:23<00:02,  1.88it/s, loss=486.8741]Epoch 1/1:  90%|█████████ | 45/50 [00:24<00:02,  1.88it/s, loss=106.2547]Epoch 1/1:  92%|█████████▏| 46/50 [00:24<00:02,  1.88it/s, loss=106.2547]Epoch 1/1:  92%|█████████▏| 46/50 [00:25<00:02,  1.88it/s, loss=35.8063] Epoch 1/1:  94%|█████████▍| 47/50 [00:25<00:01,  1.89it/s, loss=35.8063]Epoch 1/1:  94%|█████████▍| 47/50 [00:25<00:01,  1.89it/s, loss=471.1084]Epoch 1/1:  96%|█████████▌| 48/50 [00:25<00:01,  1.90it/s, loss=471.1084]Epoch 1/1:  96%|█████████▌| 48/50 [00:26<00:01,  1.90it/s, loss=191.6113]Epoch 1/1:  98%|█████████▊| 49/50 [00:26<00:00,  1.91it/s, loss=191.6113]Epoch 1/1:  98%|█████████▊| 49/50 [00:26<00:00,  1.91it/s, loss=43.6937] Epoch 1/1: 100%|██████████| 50/50 [00:26<00:00,  1.90it/s, loss=43.6937]                                                                        [92mINFO [0m:      Sent reply
 [92mINFO [0m:      
-[92mINFO [0m:      Received: evaluate message c3fc83cb-b5cf-47a5-934a-d115ab6f779e
-[Client] Finished local training | Loss: 16.4726
+[92mINFO [0m:      Received: evaluate message 7647ffaa-9192-4689-a81f-fe3dbe7c3772
+[Client] Finished local training | Loss: 432.7231
 [Client None] fit() returning — trained for 1 local epochs
-timing the computation, evaluating probability map, and visualizing... 
-  0%|          | 0/1 [00:00<?, ?it/s]                                     [91mERROR [0m:     Client raised an exception.
-Traceback (most recent call last):
-  File "/home/user/.pyenv/versions/flowchain-implementation/lib/python3.12/site-packages/flwr/client/app.py", line 571, in start_client_internal
-    reply_message = client_app(message=message, context=context)
-                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/user/.pyenv/versions/flowchain-implementation/lib/python3.12/site-packages/flwr/client/client_app.py", line 144, in __call__
-    return self._call(message, context)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/user/.pyenv/versions/flowchain-implementation/lib/python3.12/site-packages/flwr/client/client_app.py", line 128, in ffn
-    out_message = handle_legacy_message_from_msgtype(
-                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/user/.pyenv/versions/flowchain-implementation/lib/python3.12/site-packages/flwr/client/message_handler/message_handler.py", line 135, in handle_legacy_message_from_msgtype
-    evaluate_res = maybe_call_evaluate(
-                   ^^^^^^^^^^^^^^^^^^^^
-  File "/home/user/.pyenv/versions/flowchain-implementation/lib/python3.12/site-packages/flwr/client/client.py", line 244, in maybe_call_evaluate
-    return client.evaluate(evaluate_ins)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/user/.pyenv/versions/flowchain-implementation/lib/python3.12/site-packages/flwr/client/numpy_client.py", line 251, in _evaluate
-    results = self.numpy_client.evaluate(parameters, ins.config)  # type: ignore
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/user/Documents/flowchain-implementation/src/client_app.py", line 88, in evaluate
-    result_info = federatedTest(
-                  ^^^^^^^^^^^^^^
-  File "/home/user/Documents/flowchain-implementation/src/task.py", line 67, in federatedTest
-    result_info = evaluate_model(cfg, model, data_loader, visualize)
-                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/user/Documents/flowchain-implementation/src/task.py", line 196, in evaluate_model
-    result_dict = model.predict_from_new_obs(result_dict, t)
-                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/user/Documents/flowchain-implementation/src/models/TP/fastpredNF.py", line 166, in predict_from_new_obs
-    ).log_prob(data_dict[("prob_st", 0)][:, :, time_step - 1, :2])
-      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/user/.pyenv/versions/flowchain-implementation/lib/python3.12/site-packages/torch/distributions/normal.py", line 82, in log_prob
-    self._validate_sample(value)
-  File "/home/user/.pyenv/versions/flowchain-implementation/lib/python3.12/site-packages/torch/distributions/distribution.py", line 301, in _validate_sample
-    raise ValueError(
-ValueError: Value is not broadcastable with batch_shape+event_shape: torch.Size([10, 10000, 2]) vs torch.Size([10, 2]).
-Debug: Iteration 0, before model.predict (warm-up)
-Debug: Iteration 0, after model.predict (warm-up), before main predict
-Traceback (most recent call last):
-  File "/home/user/Documents/flowchain-implementation/src/client_app.py", line 144, in <module>
-    main()
-  File "/home/user/Documents/flowchain-implementation/src/client_app.py", line 136, in main
-    fl.client.start_client(server_address="0.0.0.0:9090",
-  File "/home/user/.pyenv/versions/flowchain-implementation/lib/python3.12/site-packages/flwr/client/app.py", line 201, in start_client
-    start_client_internal(
-  File "/home/user/.pyenv/versions/flowchain-implementation/lib/python3.12/site-packages/flwr/client/app.py", line 578, in start_client_internal
-    raise ex
-  File "/home/user/.pyenv/versions/flowchain-implementation/lib/python3.12/site-packages/flwr/client/app.py", line 571, in start_client_internal
-    reply_message = client_app(message=message, context=context)
-                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/user/.pyenv/versions/flowchain-implementation/lib/python3.12/site-packages/flwr/client/client_app.py", line 144, in __call__
-    return self._call(message, context)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/user/.pyenv/versions/flowchain-implementation/lib/python3.12/site-packages/flwr/client/client_app.py", line 128, in ffn
-    out_message = handle_legacy_message_from_msgtype(
-                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/user/.pyenv/versions/flowchain-implementation/lib/python3.12/site-packages/flwr/client/message_handler/message_handler.py", line 135, in handle_legacy_message_from_msgtype
-    evaluate_res = maybe_call_evaluate(
-                   ^^^^^^^^^^^^^^^^^^^^
-  File "/home/user/.pyenv/versions/flowchain-implementation/lib/python3.12/site-packages/flwr/client/client.py", line 244, in maybe_call_evaluate
-    return client.evaluate(evaluate_ins)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/user/.pyenv/versions/flowchain-implementation/lib/python3.12/site-packages/flwr/client/numpy_client.py", line 251, in _evaluate
-    results = self.numpy_client.evaluate(parameters, ins.config)  # type: ignore
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/user/Documents/flowchain-implementation/src/client_app.py", line 88, in evaluate
-    result_info = federatedTest(
-                  ^^^^^^^^^^^^^^
-  File "/home/user/Documents/flowchain-implementation/src/task.py", line 67, in federatedTest
-    result_info = evaluate_model(cfg, model, data_loader, visualize)
-                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/user/Documents/flowchain-implementation/src/task.py", line 196, in evaluate_model
-    result_dict = model.predict_from_new_obs(result_dict, t)
-                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/user/Documents/flowchain-implementation/src/models/TP/fastpredNF.py", line 166, in predict_from_new_obs
-    ).log_prob(data_dict[("prob_st", 0)][:, :, time_step - 1, :2])
-      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/user/.pyenv/versions/flowchain-implementation/lib/python3.12/site-packages/torch/distributions/normal.py", line 82, in log_prob
-    self._validate_sample(value)
-  File "/home/user/.pyenv/versions/flowchain-implementation/lib/python3.12/site-packages/torch/distributions/distribution.py", line 301, in _validate_sample
-    raise ValueError(
-ValueError: Value is not broadcastable with batch_shape+event_shape: torch.Size([10, 10000, 2]) vs torch.Size([10, 2]).
+evaluating ADE/FDE metrics ...
+  0%|          | 0/6 [00:00<?, ?it/s] 17%|█▋        | 1/6 [00:01<00:05,  1.06s/it] 33%|███▎      | 2/6 [00:02<00:04,  1.03s/it] 50%|█████     | 3/6 [00:03<00:03,  1.02s/it] 67%|██████▋   | 4/6 [00:04<00:02,  1.06s/it] 83%|████████▎ | 5/6 [00:05<00:01,  1.04s/it]100%|██████████| 6/6 [00:06<00:00,  1.03s/it]                                             [92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: reconnect message 9b43a116-a9ea-4a92-9b92-c8ad16dc08cd
+[92mINFO [0m:      Disconnect and shut down
+{'score': np.float64(1.827598830790358e+33), 'ade': np.float64(1.827598830790358e+33), 'fde': np.float64(1.8275988418629776e+33), 'nsample': np.float64(1.0)}
+RESULT INFO: {'score': np.float64(1.827598830790358e+33), 'ade': np.float64(1.827598830790358e+33), 'fde': np.float64(1.8275988418629776e+33), 'nsample': np.float64(1.0)}
