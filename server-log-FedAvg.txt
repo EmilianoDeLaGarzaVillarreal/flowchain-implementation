@@ -1,0 +1,130 @@
+[93mWARNING [0m:   DEPRECATED FEATURE: flwr.server.start_server() is deprecated.
+	Instead, use the `flower-superlink` CLI command to start a SuperLink as shown below:
+
+		$ flower-superlink --insecure
+
+	To view usage and all available options, run:
+
+		$ flower-superlink --help
+
+	Using `start_server()` is deprecated.
+
+            This is a deprecated feature. It will be removed
+            entirely in future versions of Flower.
+        
+[92mINFO [0m:      Starting Flower server, config: num_rounds=10, no round_timeout
+[92mINFO [0m:      Flower ECE: gRPC server running (10 rounds), SSL is disabled
+[92mINFO [0m:      [INIT]
+[92mINFO [0m:      Requesting initial parameters from one random client
+[92mINFO [0m:      Received initial parameters from one random client
+[92mINFO [0m:      Starting evaluation of initial global parameters
+[92mINFO [0m:      Evaluation returned no results (`None`)
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 1]
+[92mINFO [0m:      configure_fit: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_fit: received 1 results and 0 failures
+[93mWARNING [0m:   No fit_metrics_aggregation_fn provided
+[92mINFO [0m:      configure_evaluate: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_evaluate: received 1 results and 0 failures
+[93mWARNING [0m:   No evaluate_metrics_aggregation_fn provided
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 2]
+[92mINFO [0m:      configure_fit: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_fit: received 1 results and 0 failures
+[92mINFO [0m:      configure_evaluate: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_evaluate: received 1 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 3]
+[92mINFO [0m:      configure_fit: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_fit: received 1 results and 0 failures
+[92mINFO [0m:      configure_evaluate: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_evaluate: received 1 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 4]
+[92mINFO [0m:      configure_fit: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_fit: received 1 results and 0 failures
+[92mINFO [0m:      configure_evaluate: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_evaluate: received 1 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 5]
+[92mINFO [0m:      configure_fit: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_fit: received 1 results and 0 failures
+[92mINFO [0m:      configure_evaluate: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_evaluate: received 1 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 6]
+[92mINFO [0m:      configure_fit: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_fit: received 1 results and 0 failures
+[92mINFO [0m:      configure_evaluate: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_evaluate: received 1 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 7]
+[92mINFO [0m:      configure_fit: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_fit: received 1 results and 0 failures
+[92mINFO [0m:      configure_evaluate: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_evaluate: received 1 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 8]
+[92mINFO [0m:      configure_fit: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_fit: received 1 results and 0 failures
+[92mINFO [0m:      configure_evaluate: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_evaluate: received 1 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 9]
+[92mINFO [0m:      configure_fit: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_fit: received 1 results and 0 failures
+[92mINFO [0m:      configure_evaluate: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_evaluate: received 0 results and 1 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 10]
+Traceback (most recent call last):
+  File "/home/emiliano/Documents/Flowchain-training/flowchain-implementation/src/server_app.py", line 50, in <module>
+    main()
+  File "/home/emiliano/Documents/Flowchain-training/flowchain-implementation/src/server_app.py", line 42, in main
+    fl.server.start_server(
+  File "/home/emiliano/.pyenv/versions/flowchain-FL-3.12/lib/python3.12/site-packages/flwr/server/app.py", line 255, in start_server
+    hist = run_fl(
+           ^^^^^^^
+  File "/home/emiliano/.pyenv/versions/flowchain-FL-3.12/lib/python3.12/site-packages/flwr/server/server.py", line 492, in run_fl
+    hist, elapsed_time = server.fit(
+                         ^^^^^^^^^^^
+  File "/home/emiliano/.pyenv/versions/flowchain-FL-3.12/lib/python3.12/site-packages/flwr/server/server.py", line 115, in fit
+    res_fit = self.fit_round(
+              ^^^^^^^^^^^^^^^
+  File "/home/emiliano/.pyenv/versions/flowchain-FL-3.12/lib/python3.12/site-packages/flwr/server/server.py", line 217, in fit_round
+    client_instructions = self.strategy.configure_fit(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/emiliano/.pyenv/versions/flowchain-FL-3.12/lib/python3.12/site-packages/flwr/server/strategy/fedavg.py", line 187, in configure_fit
+    clients = client_manager.sample(
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/emiliano/.pyenv/versions/flowchain-FL-3.12/lib/python3.12/site-packages/flwr/server/client_manager.py", line 189, in sample
+    self.wait_for(min_num_clients)
+  File "/home/emiliano/.pyenv/versions/flowchain-FL-3.12/lib/python3.12/site-packages/flwr/server/client_manager.py", line 134, in wait_for
+    return self._cv.wait_for(
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/emiliano/.pyenv/versions/3.12.2/lib/python3.12/threading.py", line 390, in wait_for
+    self.wait(waittime)
+  File "/home/emiliano/.pyenv/versions/3.12.2/lib/python3.12/threading.py", line 359, in wait
+    gotit = waiter.acquire(True, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/emiliano/.pyenv/versions/flowchain-FL-3.12/lib/python3.12/site-packages/flwr/common/exit_handlers.py", line 80, in graceful_exit_handler
+    flwr_exit(
+  File "/home/emiliano/.pyenv/versions/flowchain-FL-3.12/lib/python3.12/site-packages/flwr/common/exit/exit.py", line 75, in flwr_exit
+    event(event_type, event_details).result()
+  File "/home/emiliano/.pyenv/versions/3.12.2/lib/python3.12/concurrent/futures/_base.py", line 451, in result
+    self._condition.wait(timeout)
+  File "/home/emiliano/.pyenv/versions/3.12.2/lib/python3.12/threading.py", line 355, in wait
+    waiter.acquire()
+KeyboardInterrupt
+Exception ignored in: <module 'threading' from '/home/emiliano/.pyenv/versions/3.12.2/lib/python3.12/threading.py'>
+Traceback (most recent call last):
+  File "/home/emiliano/.pyenv/versions/3.12.2/lib/python3.12/threading.py", line 1592, in _shutdown
+    atexit_call()
+  File "/home/emiliano/.pyenv/versions/3.12.2/lib/python3.12/concurrent/futures/thread.py", line 31, in _python_exit
+    t.join()
+  File "/home/emiliano/.pyenv/versions/3.12.2/lib/python3.12/threading.py", line 1147, in join
+    self._wait_for_tstate_lock()
+  File "/home/emiliano/.pyenv/versions/3.12.2/lib/python3.12/threading.py", line 1167, in _wait_for_tstate_lock
+    if lock.acquire(block, timeout):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt: 

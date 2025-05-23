@@ -1,0 +1,185 @@
+/home/user/.pyenv/versions/flowchain-implementation/lib/python3.12/site-packages/ncls/__init__.py:2: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+  import pkg_resources
+[93mWARNING [0m:   DEPRECATED FEATURE: flwr.client.start_client() is deprecated.
+	Instead, use the `flower-supernode` CLI command to start a SuperNode as shown below:
+
+		$ flower-supernode --insecure --superlink='<IP>:<PORT>'
+
+	To view all available options, run:
+
+		$ flower-supernode --help
+
+	Using `start_client()` is deprecated.
+
+            This is a deprecated feature. It will be removed
+            entirely in future versions of Flower.
+        
+[92mINFO [0m:      
+[92mINFO [0m:      Received: get_parameters message f1798229-eed4-40a2-b67a-9b671d0e433b
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message e4d3dcaf-192e-47f4-9d55-ad5348b2d6c8
+INFO: Added to sys.path for dill: /home/user/Documents/flowchain-implementation/src/data/TP
+Configuration file loaded from config/TP/FlowChain/mot.yml.
+output dirname: output/config/TP/FlowChain/mot
+[Client] Start local training for 1 epoch(s)
+Epoch 1/1:   0%|          | 0/2 [00:00<?, ?it/s]Epoch 1/1:   0%|          | 0/2 [00:00<?, ?it/s, loss=27.5189]Epoch 1/1:  50%|█████     | 1/2 [00:00<00:00,  1.53it/s, loss=27.5189]Epoch 1/1:  50%|█████     | 1/2 [00:01<00:00,  1.53it/s, loss=26.6641]Epoch 1/1: 100%|██████████| 2/2 [00:01<00:00,  1.90it/s, loss=26.6641]                                                                      [Client] Finished local training | Loss: 27.0915
+evaluating ADE/FDE metrics ...
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00,  1.22it/s]                                             [92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 72df8cf4-7d0b-48f3-abd2-1169c3d05372
+[Client] Avg inference time per prediction: 0.027761s
+[Client] Estimated FPS: 36.02 (Batch size: 1)
+[FedRep Fit Client] Round 1 - ADE: 1.2895, FDE: 1.9210, Score: 1.2895, Inference time: 0.027761s
+evaluating ADE/FDE metrics ...
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00,  1.15it/s]                                             [92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message a2e25ec0-74f6-46fa-ae79-ce79be4b75a9
+[Client] Avg inference time per prediction: 0.026541s
+[Client] Estimated FPS: 37.68 (Batch size: 1)
+[FedRep Evaluate Client] Round 1 - ADE: 1.2613, FDE: 1.8912, Score: 1.2613, Inference time: 0.026541s
+[Client] Start local training for 1 epoch(s)
+Epoch 1/1:   0%|          | 0/2 [00:00<?, ?it/s]Epoch 1/1:   0%|          | 0/2 [00:00<?, ?it/s, loss=24.1730]Epoch 1/1:  50%|█████     | 1/2 [00:00<00:00,  2.25it/s, loss=24.1730]Epoch 1/1:  50%|█████     | 1/2 [00:00<00:00,  2.25it/s, loss=25.8974]Epoch 1/1: 100%|██████████| 2/2 [00:00<00:00,  2.28it/s, loss=25.8974]                                                                      [Client] Finished local training | Loss: 25.0352
+evaluating ADE/FDE metrics ...
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00,  1.26it/s]                                             [92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 3d1b064f-dc71-4d32-a660-90e865a3c015
+[Client] Avg inference time per prediction: 0.027042s
+[Client] Estimated FPS: 36.98 (Batch size: 1)
+[FedRep Fit Client] Round 2 - ADE: 1.2997, FDE: 2.0552, Score: 1.2997, Inference time: 0.027042s
+evaluating ADE/FDE metrics ...
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00,  1.16it/s]                                             [92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 4405133b-e541-4ea6-808d-249861a839fd
+[Client] Avg inference time per prediction: 0.030764s
+[Client] Estimated FPS: 32.51 (Batch size: 1)
+[FedRep Evaluate Client] Round 2 - ADE: 1.3355, FDE: 2.0871, Score: 1.3355, Inference time: 0.030764s
+[Client] Start local training for 1 epoch(s)
+Epoch 1/1:   0%|          | 0/2 [00:00<?, ?it/s]Epoch 1/1:   0%|          | 0/2 [00:00<?, ?it/s, loss=22.7150]Epoch 1/1:  50%|█████     | 1/2 [00:00<00:00,  2.20it/s, loss=22.7150]Epoch 1/1:  50%|█████     | 1/2 [00:00<00:00,  2.20it/s, loss=16.3823]Epoch 1/1: 100%|██████████| 2/2 [00:00<00:00,  2.22it/s, loss=16.3823]                                                                      [Client] Finished local training | Loss: 19.5486
+evaluating ADE/FDE metrics ...
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00,  1.25it/s]                                             [92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 9e1460c9-24a5-4a5e-85d5-269d5f0caa10
+[Client] Avg inference time per prediction: 0.027170s
+[Client] Estimated FPS: 36.80 (Batch size: 1)
+[FedRep Fit Client] Round 3 - ADE: 1.3195, FDE: 2.0923, Score: 1.3195, Inference time: 0.027170s
+evaluating ADE/FDE metrics ...
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00,  1.14it/s]                                             [92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 35e8144b-d9aa-4c43-8531-cd4c2b2dcc9b
+[Client] Avg inference time per prediction: 0.026195s
+[Client] Estimated FPS: 38.18 (Batch size: 1)
+[FedRep Evaluate Client] Round 3 - ADE: 1.2899, FDE: 2.0143, Score: 1.2899, Inference time: 0.026195s
+[Client] Start local training for 1 epoch(s)
+Epoch 1/1:   0%|          | 0/2 [00:00<?, ?it/s]Epoch 1/1:   0%|          | 0/2 [00:00<?, ?it/s, loss=15.7788]Epoch 1/1:  50%|█████     | 1/2 [00:00<00:00,  2.18it/s, loss=15.7788]Epoch 1/1:  50%|█████     | 1/2 [00:00<00:00,  2.18it/s, loss=14.2885]Epoch 1/1: 100%|██████████| 2/2 [00:00<00:00,  2.21it/s, loss=14.2885]                                                                      [Client] Finished local training | Loss: 15.0336
+evaluating ADE/FDE metrics ...
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00,  1.26it/s]                                             [92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message be1a1a46-65f6-450c-a7eb-29d2d30953ba
+[Client] Avg inference time per prediction: 0.027103s
+[Client] Estimated FPS: 36.90 (Batch size: 1)
+[FedRep Fit Client] Round 4 - ADE: 1.3157, FDE: 2.1024, Score: 1.3157, Inference time: 0.027103s
+evaluating ADE/FDE metrics ...
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00,  1.16it/s]                                             [92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message e82d0ad2-0939-41d0-9800-aa1ad503bef3
+[Client] Avg inference time per prediction: 0.026133s
+[Client] Estimated FPS: 38.27 (Batch size: 1)
+[FedRep Evaluate Client] Round 4 - ADE: 1.3251, FDE: 2.1360, Score: 1.3251, Inference time: 0.026133s
+[Client] Start local training for 1 epoch(s)
+Epoch 1/1:   0%|          | 0/2 [00:00<?, ?it/s]Epoch 1/1:   0%|          | 0/2 [00:00<?, ?it/s, loss=14.0115]Epoch 1/1:  50%|█████     | 1/2 [00:00<00:00,  2.26it/s, loss=14.0115]Epoch 1/1:  50%|█████     | 1/2 [00:00<00:00,  2.26it/s, loss=10.5213]Epoch 1/1: 100%|██████████| 2/2 [00:00<00:00,  2.21it/s, loss=10.5213]                                                                      [Client] Finished local training | Loss: 12.2664
+evaluating ADE/FDE metrics ...
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00,  1.28it/s]                                             [92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 7a6f5925-2f27-4e60-b808-391f620aafc8
+[Client] Avg inference time per prediction: 0.026318s
+[Client] Estimated FPS: 38.00 (Batch size: 1)
+[FedRep Fit Client] Round 5 - ADE: 1.3045, FDE: 2.0503, Score: 1.3045, Inference time: 0.026318s
+evaluating ADE/FDE metrics ...
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00,  1.14it/s]                                             [92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 0e38be66-9c7d-4671-b447-56940dc23e66
+[Client] Avg inference time per prediction: 0.031334s
+[Client] Estimated FPS: 31.91 (Batch size: 1)
+[FedRep Evaluate Client] Round 5 - ADE: 1.3336, FDE: 2.1119, Score: 1.3336, Inference time: 0.031334s
+[Client] Start local training for 1 epoch(s)
+Epoch 1/1:   0%|          | 0/2 [00:00<?, ?it/s]Epoch 1/1:   0%|          | 0/2 [00:00<?, ?it/s, loss=12.0206]Epoch 1/1:  50%|█████     | 1/2 [00:00<00:00,  2.25it/s, loss=12.0206]Epoch 1/1:  50%|█████     | 1/2 [00:00<00:00,  2.25it/s, loss=10.3504]Epoch 1/1: 100%|██████████| 2/2 [00:00<00:00,  2.25it/s, loss=10.3504]                                                                      [Client] Finished local training | Loss: 11.1855
+evaluating ADE/FDE metrics ...
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00,  1.30it/s]                                             [92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message c94c801c-649a-42dd-94d9-8ff8343bc621
+[Client] Avg inference time per prediction: 0.026019s
+[Client] Estimated FPS: 38.43 (Batch size: 1)
+[FedRep Fit Client] Round 6 - ADE: 1.3023, FDE: 2.0693, Score: 1.3023, Inference time: 0.026019s
+evaluating ADE/FDE metrics ...
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00,  1.30it/s]                                             [92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 4777e7f3-f14b-4dd5-8def-282b6e94b056
+[Client] Avg inference time per prediction: 0.026028s
+[Client] Estimated FPS: 38.42 (Batch size: 1)
+[FedRep Evaluate Client] Round 6 - ADE: 1.3567, FDE: 2.1465, Score: 1.3567, Inference time: 0.026028s
+[Client] Start local training for 1 epoch(s)
+Epoch 1/1:   0%|          | 0/2 [00:00<?, ?it/s]Epoch 1/1:   0%|          | 0/2 [00:00<?, ?it/s, loss=9.4279]Epoch 1/1:  50%|█████     | 1/2 [00:00<00:00,  2.27it/s, loss=9.4279]Epoch 1/1:  50%|█████     | 1/2 [00:00<00:00,  2.27it/s, loss=8.7027]Epoch 1/1: 100%|██████████| 2/2 [00:00<00:00,  2.05it/s, loss=8.7027]                                                                     [Client] Finished local training | Loss: 9.0653
+evaluating ADE/FDE metrics ...
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00,  1.30it/s]                                             [92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 5932fd9f-2d4d-4d2e-9c3c-735365271fc3
+[Client] Avg inference time per prediction: 0.026014s
+[Client] Estimated FPS: 38.44 (Batch size: 1)
+[FedRep Fit Client] Round 7 - ADE: 1.3736, FDE: 2.2187, Score: 1.3736, Inference time: 0.026014s
+evaluating ADE/FDE metrics ...
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00,  1.29it/s]                                             [92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message b2a07aad-a5c4-4a0b-b11d-83d7b521b40b
+[Client] Avg inference time per prediction: 0.026020s
+[Client] Estimated FPS: 38.43 (Batch size: 1)
+[FedRep Evaluate Client] Round 7 - ADE: 1.3673, FDE: 2.1731, Score: 1.3673, Inference time: 0.026020s
+[Client] Start local training for 1 epoch(s)
+Epoch 1/1:   0%|          | 0/2 [00:00<?, ?it/s]Epoch 1/1:   0%|          | 0/2 [00:00<?, ?it/s, loss=7.9904]Epoch 1/1:  50%|█████     | 1/2 [00:00<00:00,  2.26it/s, loss=7.9904]Epoch 1/1:  50%|█████     | 1/2 [00:00<00:00,  2.26it/s, loss=7.2209]Epoch 1/1: 100%|██████████| 2/2 [00:00<00:00,  2.03it/s, loss=7.2209]                                                                     [Client] Finished local training | Loss: 7.6056
+evaluating ADE/FDE metrics ...
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00,  1.30it/s]                                             [92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 60c794dd-9280-446b-8897-9ceae050e6e8
+[Client] Avg inference time per prediction: 0.026066s
+[Client] Estimated FPS: 38.36 (Batch size: 1)
+[FedRep Fit Client] Round 8 - ADE: 1.3743, FDE: 2.2167, Score: 1.3743, Inference time: 0.026066s
+evaluating ADE/FDE metrics ...
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00,  1.29it/s]                                             [92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message ee0aca10-b6ce-4749-ab59-a59624c4387d
+[Client] Avg inference time per prediction: 0.026068s
+[Client] Estimated FPS: 38.36 (Batch size: 1)
+[FedRep Evaluate Client] Round 8 - ADE: 1.3663, FDE: 2.2071, Score: 1.3663, Inference time: 0.026068s
+[Client] Start local training for 1 epoch(s)
+Epoch 1/1:   0%|          | 0/2 [00:00<?, ?it/s]Epoch 1/1:   0%|          | 0/2 [00:00<?, ?it/s, loss=7.5813]Epoch 1/1:  50%|█████     | 1/2 [00:00<00:00,  2.25it/s, loss=7.5813]Epoch 1/1:  50%|█████     | 1/2 [00:00<00:00,  2.25it/s, loss=6.9661]Epoch 1/1: 100%|██████████| 2/2 [00:00<00:00,  2.23it/s, loss=6.9661]                                                                     [Client] Finished local training | Loss: 7.2737
+evaluating ADE/FDE metrics ...
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00,  1.30it/s]                                             [92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 9baa93b4-1d4f-492d-b127-016ad9ad9e37
+[Client] Avg inference time per prediction: 0.026114s
+[Client] Estimated FPS: 38.29 (Batch size: 1)
+[FedRep Fit Client] Round 9 - ADE: 1.3952, FDE: 2.2098, Score: 1.3952, Inference time: 0.026114s
+evaluating ADE/FDE metrics ...
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00,  1.16it/s]                                             [92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message c4c5db44-0ff2-4dec-a239-7b9b9d46dc25
+[Client] Avg inference time per prediction: 0.030657s
+[Client] Estimated FPS: 32.62 (Batch size: 1)
+[FedRep Evaluate Client] Round 9 - ADE: 1.3744, FDE: 2.1861, Score: 1.3744, Inference time: 0.030657s
+[Client] Start local training for 1 epoch(s)
+Epoch 1/1:   0%|          | 0/2 [00:00<?, ?it/s]Epoch 1/1:   0%|          | 0/2 [00:00<?, ?it/s, loss=5.5520]Epoch 1/1:  50%|█████     | 1/2 [00:00<00:00,  2.27it/s, loss=5.5520]Epoch 1/1:  50%|█████     | 1/2 [00:00<00:00,  2.27it/s, loss=5.8078]Epoch 1/1: 100%|██████████| 2/2 [00:00<00:00,  2.26it/s, loss=5.8078]                                                                     [Client] Finished local training | Loss: 5.6799
+evaluating ADE/FDE metrics ...
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00,  1.29it/s]                                             [92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message a752d3ea-cbb9-4cc6-bf13-2825db54dd6e
+[Client] Avg inference time per prediction: 0.026122s
+[Client] Estimated FPS: 38.28 (Batch size: 1)
+[FedRep Fit Client] Round 10 - ADE: 1.3859, FDE: 2.1809, Score: 1.3859, Inference time: 0.026122s
+evaluating ADE/FDE metrics ...
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00,  1.29it/s]                                             [92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: reconnect message bd76f182-05b5-4e40-9b1a-fd305b6ae3bd
+[92mINFO [0m:      Disconnect and shut down
+[Client] Avg inference time per prediction: 0.026048s
+[Client] Estimated FPS: 38.39 (Batch size: 1)
+[FedRep Evaluate Client] Round 10 - ADE: 1.3574, FDE: 2.1721, Score: 1.3574, Inference time: 0.026048s

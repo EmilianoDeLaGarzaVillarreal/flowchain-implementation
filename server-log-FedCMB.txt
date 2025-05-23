@@ -1,0 +1,238 @@
+[93mWARNING [0m:   DEPRECATED FEATURE: flwr.server.start_server() is deprecated.
+	Instead, use the `flower-superlink` CLI command to start a SuperLink as shown below:
+
+		$ flower-superlink --insecure
+
+	To view usage and all available options, run:
+
+		$ flower-superlink --help
+
+	Using `start_server()` is deprecated.
+
+            This is a deprecated feature. It will be removed
+            entirely in future versions of Flower.
+        
+[92mINFO [0m:      Starting Flower server, config: num_rounds=10, no round_timeout
+[92mINFO [0m:      Flower ECE: gRPC server running (10 rounds), SSL is disabled
+[92mINFO [0m:      [INIT]
+[92mINFO [0m:      Requesting initial parameters from one random client
+[92mINFO [0m:      Received initial parameters from one random client
+[92mINFO [0m:      Starting evaluation of initial global parameters
+[92mINFO [0m:      Evaluation returned no results (`None`)
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 1]
+[92mINFO [0m:      configure_fit: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_fit: received 1 results and 0 failures
+[92mINFO [0m:      configure_evaluate: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_evaluate: received 1 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 2]
+[92mINFO [0m:      configure_fit: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_fit: received 1 results and 0 failures
+[92mINFO [0m:      configure_evaluate: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_evaluate: received 1 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 3]
+[92mINFO [0m:      configure_fit: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_fit: received 1 results and 0 failures
+[92mINFO [0m:      configure_evaluate: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_evaluate: received 1 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 4]
+[92mINFO [0m:      configure_fit: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_fit: received 1 results and 0 failures
+[92mINFO [0m:      configure_evaluate: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_evaluate: received 1 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 5]
+[92mINFO [0m:      configure_fit: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_fit: received 1 results and 0 failures
+[92mINFO [0m:      configure_evaluate: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_evaluate: received 1 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 6]
+[92mINFO [0m:      configure_fit: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_fit: received 1 results and 0 failures
+[92mINFO [0m:      configure_evaluate: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_evaluate: received 1 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 7]
+[92mINFO [0m:      configure_fit: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_fit: received 1 results and 0 failures
+[92mINFO [0m:      configure_evaluate: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_evaluate: received 1 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 8]
+[92mINFO [0m:      configure_fit: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_fit: received 1 results and 0 failures
+[92mINFO [0m:      configure_evaluate: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_evaluate: received 1 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 9]
+[92mINFO [0m:      configure_fit: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_fit: received 1 results and 0 failures
+[92mINFO [0m:      configure_evaluate: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_evaluate: received 1 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 10]
+[92mINFO [0m:      configure_fit: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_fit: received 1 results and 0 failures
+[92mINFO [0m:      configure_evaluate: strategy sampled 1 clients (out of 1)
+[92mINFO [0m:      aggregate_evaluate: received 1 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [SUMMARY]
+[92mINFO [0m:      Run finished 10 round(s) in 28.96s
+[92mINFO [0m:      	History (loss, distributed):
+[92mINFO [0m:      		round 1: 1.261291742324829
+[92mINFO [0m:      		round 2: 1.3354607820510864
+[92mINFO [0m:      		round 3: 1.2899150848388672
+[92mINFO [0m:      		round 4: 1.3250528573989868
+[92mINFO [0m:      		round 5: 1.3335936069488525
+[92mINFO [0m:      		round 6: 1.3566771745681763
+[92mINFO [0m:      		round 7: 1.3673171997070312
+[92mINFO [0m:      		round 8: 1.3663054704666138
+[92mINFO [0m:      		round 9: 1.3744274377822876
+[92mINFO [0m:      		round 10: 1.3574460744857788
+[92mINFO [0m:      	History (metrics, distributed, fit):
+[92mINFO [0m:      	{'round': [(1, 1),
+[92mINFO [0m:      	           (2, 2),
+[92mINFO [0m:      	           (3, 3),
+[92mINFO [0m:      	           (4, 4),
+[92mINFO [0m:      	           (5, 5),
+[92mINFO [0m:      	           (6, 6),
+[92mINFO [0m:      	           (7, 7),
+[92mINFO [0m:      	           (8, 8),
+[92mINFO [0m:      	           (9, 9),
+[92mINFO [0m:      	           (10, 10)]}
+[92mINFO [0m:      	History (metrics, distributed, evaluate):
+[92mINFO [0m:      	{'avg_loss': [(1, 1.261291742324829),
+[92mINFO [0m:      	              (2, 1.3354607820510864),
+[92mINFO [0m:      	              (3, 1.2899150848388672),
+[92mINFO [0m:      	              (4, 1.3250528573989868),
+[92mINFO [0m:      	              (5, 1.3335936069488525),
+[92mINFO [0m:      	              (6, 1.3566771745681763),
+[92mINFO [0m:      	              (7, 1.3673171997070312),
+[92mINFO [0m:      	              (8, 1.3663054704666138),
+[92mINFO [0m:      	              (9, 1.3744274377822876),
+[92mINFO [0m:      	              (10, 1.3574460744857788)]}
+[92mINFO [0m:      
+
+===== Round 1 Aggregation Info =====
+[DEBUG] Received metrics from client: {'nsample': 1.0, 'inference_time': 0.027760648727416994, 'loss': 27.09149742126465, 'fps': 36.02221294678821, 'ade': 1.2894989369373968, 'fde': 1.920977355408712, 'score': 1.2894989369373968}
+Client a0a50a740b514e2e94bec5d99f61068d | ADE: 1.2895 | FDE: 1.9210 | Combined Metric: 1.5431 | Weight: 0.6480
+
+Normalized Weights per Client:
+Client a0a50a740b514e2e94bec5d99f61068d: 1.0000
+=====================================
+
+
+[Server - FedCMB] Round 1 - Client Evaluation Results:
+Client a0a50a740b514e2e94bec5d99f61068d - ADE: 1.2613, FDE: 1.8912, Score: 1.2613, Inference time: 0.026541s
+
+===== Round 2 Aggregation Info =====
+[DEBUG] Received metrics from client: {'nsample': 1.0, 'inference_time': 0.02704200744628906, 'loss': 25.035184860229492, 'fps': 36.97950316692294, 'ade': 1.2996526414802825, 'fde': 2.0552430833064586, 'score': 1.2996526414802825}
+Client a0a50a740b514e2e94bec5d99f61068d | ADE: 1.2997 | FDE: 2.0552 | Combined Metric: 1.5924 | Weight: 0.6280
+
+Normalized Weights per Client:
+Client a0a50a740b514e2e94bec5d99f61068d: 1.0000
+=====================================
+
+
+[Server - FedCMB] Round 2 - Client Evaluation Results:
+Client a0a50a740b514e2e94bec5d99f61068d - ADE: 1.3355, FDE: 2.0871, Score: 1.3355, Inference time: 0.030764s
+
+===== Round 3 Aggregation Info =====
+[DEBUG] Received metrics from client: {'nsample': 1.0, 'inference_time': 0.027170372009277344, 'loss': 19.548644065856934, 'fps': 36.804796035127865, 'ade': 1.319532481966738, 'fde': 2.0922600470292427, 'score': 1.319532481966738}
+Client a0a50a740b514e2e94bec5d99f61068d | ADE: 1.3195 | FDE: 2.0923 | Combined Metric: 1.6184 | Weight: 0.6179
+
+Normalized Weights per Client:
+Client a0a50a740b514e2e94bec5d99f61068d: 1.0000
+=====================================
+
+
+[Server - FedCMB] Round 3 - Client Evaluation Results:
+Client a0a50a740b514e2e94bec5d99f61068d - ADE: 1.2899, FDE: 2.0143, Score: 1.2899, Inference time: 0.026195s
+
+===== Round 4 Aggregation Info =====
+[DEBUG] Received metrics from client: {'nsample': 1.0, 'inference_time': 0.027102792263031007, 'loss': 15.033621311187744, 'fps': 36.89656734608961, 'ade': 1.3157023228597864, 'fde': 2.1024484168636715, 'score': 1.3157023228597864}
+Client a0a50a740b514e2e94bec5d99f61068d | ADE: 1.3157 | FDE: 2.1024 | Combined Metric: 1.6185 | Weight: 0.6178
+
+Normalized Weights per Client:
+Client a0a50a740b514e2e94bec5d99f61068d: 1.0000
+=====================================
+
+
+[Server - FedCMB] Round 4 - Client Evaluation Results:
+Client a0a50a740b514e2e94bec5d99f61068d - ADE: 1.3251, FDE: 2.1360, Score: 1.3251, Inference time: 0.026133s
+
+===== Round 5 Aggregation Info =====
+[DEBUG] Received metrics from client: {'nsample': 1.0, 'inference_time': 0.026318180561065673, 'loss': 12.26640272140503, 'fps': 37.99654758351229, 'ade': 1.3045147431185946, 'fde': 2.050307137590976, 'score': 1.3045147431185946}
+Client a0a50a740b514e2e94bec5d99f61068d | ADE: 1.3045 | FDE: 2.0503 | Combined Metric: 1.5945 | Weight: 0.6272
+
+Normalized Weights per Client:
+Client a0a50a740b514e2e94bec5d99f61068d: 1.0000
+=====================================
+
+
+[Server - FedCMB] Round 5 - Client Evaluation Results:
+Client a0a50a740b514e2e94bec5d99f61068d - ADE: 1.3336, FDE: 2.1119, Score: 1.3336, Inference time: 0.031334s
+
+===== Round 6 Aggregation Info =====
+[DEBUG] Received metrics from client: {'nsample': 1.0, 'inference_time': 0.026019012928009032, 'loss': 11.185481071472168, 'fps': 38.43343338069204, 'ade': 1.3023297175948594, 'fde': 2.0692573491673523, 'score': 1.3023297175948594}
+Client a0a50a740b514e2e94bec5d99f61068d | ADE: 1.3023 | FDE: 2.0693 | Combined Metric: 1.5986 | Weight: 0.6256
+
+Normalized Weights per Client:
+Client a0a50a740b514e2e94bec5d99f61068d: 1.0000
+=====================================
+
+
+[Server - FedCMB] Round 6 - Client Evaluation Results:
+Client a0a50a740b514e2e94bec5d99f61068d - ADE: 1.3567, FDE: 2.1465, Score: 1.3567, Inference time: 0.026028s
+
+===== Round 7 Aggregation Info =====
+[DEBUG] Received metrics from client: {'nsample': 1.0, 'inference_time': 0.026014482975006102, 'loss': 9.065330982208252, 'fps': 38.44012586991518, 'ade': 1.3735971658587742, 'fde': 2.218719220135671, 'score': 1.3735971658587742}
+Client a0a50a740b514e2e94bec5d99f61068d | ADE: 1.3736 | FDE: 2.2187 | Combined Metric: 1.6967 | Weight: 0.5894
+
+Normalized Weights per Client:
+Client a0a50a740b514e2e94bec5d99f61068d: 1.0000
+=====================================
+
+
+[Server - FedCMB] Round 7 - Client Evaluation Results:
+Client a0a50a740b514e2e94bec5d99f61068d - ADE: 1.3673, FDE: 2.1731, Score: 1.3673, Inference time: 0.026020s
+
+===== Round 8 Aggregation Info =====
+[DEBUG] Received metrics from client: {'nsample': 1.0, 'inference_time': 0.026065611839294435, 'loss': 7.605640888214111, 'fps': 38.36472384248736, 'ade': 1.3742897765910351, 'fde': 2.2166536051812935, 'score': 1.3742897765910351}
+Client a0a50a740b514e2e94bec5d99f61068d | ADE: 1.3743 | FDE: 2.2167 | Combined Metric: 1.6967 | Weight: 0.5894
+
+Normalized Weights per Client:
+Client a0a50a740b514e2e94bec5d99f61068d: 1.0000
+=====================================
+
+
+[Server - FedCMB] Round 8 - Client Evaluation Results:
+Client a0a50a740b514e2e94bec5d99f61068d - ADE: 1.3663, FDE: 2.2071, Score: 1.3663, Inference time: 0.026068s
+
+===== Round 9 Aggregation Info =====
+[DEBUG] Received metrics from client: {'nsample': 1.0, 'inference_time': 0.026114273071289062, 'loss': 7.273720026016235, 'fps': 38.293235169522475, 'ade': 1.395183439653633, 'fde': 2.20982724173189, 'score': 1.395183439653633}
+Client a0a50a740b514e2e94bec5d99f61068d | ADE: 1.3952 | FDE: 2.2098 | Combined Metric: 1.7105 | Weight: 0.5846
+
+Normalized Weights per Client:
+Client a0a50a740b514e2e94bec5d99f61068d: 1.0000
+=====================================
+
+
+[Server - FedCMB] Round 9 - Client Evaluation Results:
+Client a0a50a740b514e2e94bec5d99f61068d - ADE: 1.3744, FDE: 2.1861, Score: 1.3744, Inference time: 0.030657s
+
+===== Round 10 Aggregation Info =====
+[DEBUG] Received metrics from client: {'nsample': 1.0, 'inference_time': 0.026122045516967774, 'loss': 5.679883718490601, 'fps': 38.28184126508938, 'ade': 1.385915739320969, 'fde': 2.1809006503203787, 'score': 1.385915739320969}
+Client a0a50a740b514e2e94bec5d99f61068d | ADE: 1.3859 | FDE: 2.1809 | Combined Metric: 1.6948 | Weight: 0.5900
+
+Normalized Weights per Client:
+Client a0a50a740b514e2e94bec5d99f61068d: 1.0000
+=====================================
+
+
+[Server - FedCMB] Round 10 - Client Evaluation Results:
+Client a0a50a740b514e2e94bec5d99f61068d - ADE: 1.3574, FDE: 2.1721, Score: 1.3574, Inference time: 0.026048s
