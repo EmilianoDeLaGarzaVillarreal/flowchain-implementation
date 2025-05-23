@@ -1,6 +1,6 @@
 from utils import load_config
 from yacs.config import CfgNode
-from task import federatedTrain, evaluate_model
+from task import federatedTrain, federatedTest, evaluate_model
 import flwr as fl
 from flwr.client import NumPyClient
 import torch
@@ -10,6 +10,7 @@ import argparse
 from models.build_model import Build_Model
 from data.unified_loader import unified_loader
 import os
+import copy
 import sys
 
 # --- BEGIN sys.path MODIFICATION ---
@@ -30,17 +31,18 @@ path_to_environment_module_dir = os.path.join(
 # Add this path to the beginning of sys.path if it's not already there
 if path_to_environment_module_dir not in sys.path:
     sys.path.insert(0, path_to_environment_module_dir)
-    print(f"INFO: Added to sys.path for dill: {
-          path_to_environment_module_dir}")
+    print(
+        f"INFO: Added to sys.path for dill: {
+          path_to_environment_module_dir}"
+    )
 # --- END sys.path MODIFICATION ---
 
 
-class FlowerClient(NumPyClient):
+class FedProxClient(NumPyClient):
     def __init__(self, local_epochs, cfg: CfgNode):
         self.net = Build_Model(cfg)
         self.local_epochs = local_epochs
-        self.device = torch.device(
-            "cuda:0" if torch.cuda.is_available() else "cpu")
+        self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         self.net.to(self.device)
         self.cfg = cfg
         self.partition_id = cfg.get("partition_id", None)
@@ -56,6 +58,7 @@ class FlowerClient(NumPyClient):
             split="test",  # CAN CHANGE
             batch_size=128,
         )
+        self.global_model_weights_for_prox_term: List[torch.Tensor] = []
 
     def get_parameters(self, config) -> List[np.ndarray]:
         return [val.cpu().numpy() for _, val in self.net.state_dict().items()]
@@ -81,11 +84,19 @@ class FlowerClient(NumPyClient):
 
     def fit(self, parameters, config):
         self.set_parameters(parameters)
-        server_round = config.get("current_round")
+
+        self.global_model_weights_for_prox_term = [
+            param.detach().clone() for param in self.net.parameters() if param.requires_grad
+        ]
+
+        mu = config.get("mu", 0.0) # Default to 0.0 if not provided by server
+        server_round = config.get("current_round", "N/A") # Get current round for logging
         loss = federatedTrain(
             cfg=self.cfg,
             model=self.net,
             train_loader=self.trainloader,
+            proximal_mu=mu,
+            global_model_weights=self.global_model_weights_for_prox_term,
         )
         metrics = evaluate_model(
             self.cfg, self.net, self.valloader, self.cfg.TEST.VISUALIZE, server_round
@@ -95,7 +106,7 @@ class FlowerClient(NumPyClient):
         metrics["loss"] = loss
         metrics["score"] = ade
         print(
-            f"[FedRep Fit Client] Round {server_round} - ADE: {ade:.4f}, FDE: {
+            f"[FedProx Fit Client] Round {server_round} - ADE: {ade:.4f}, FDE: {
                 fde:.4f
             }, "
             f"Score: {metrics['score']:.4f}, Inference time: {metrics['inference_time']:.6f}s")
@@ -116,7 +127,7 @@ class FlowerClient(NumPyClient):
         fde = metrics.get("fde", 0.0)
         metrics["score"] = ade
         print(
-            f"[FedRep Evaluate Client] Round {server_round} - ADE: {ade:.4f}, FDE: {
+            f"[FedProx Evaluate Client] Round {server_round} - ADE: {ade:.4f}, FDE: {
                 fde:.4f
             }, "
             f"Score: {metrics['score']:.4f}, Inference time: {metrics['inference_time']:.6f}s")
@@ -138,8 +149,7 @@ def main():
     parser.add_argument(
         "--visualize", action="store_true", help="Whether to visualize predictions"
     )
-    parser.add_argument("--gpu", type=str, default="0",
-                        help="CUDA GPU device id")
+    parser.add_argument("--gpu", type=str, default="0", help="CUDA GPU device id")
     parser.add_argument(
         "--data_fraction",
         type=float,
@@ -152,8 +162,7 @@ def main():
         default="train",
         help="Mode: train/test/tune (default: train)",
     )
-    parser.add_argument("--partition_id", required=True,
-                        help="This client's ID")
+    parser.add_argument("--partition_id", required=True, help="This client's ID")
     args = parser.parse_args()
 
     cfg = load_config(args)
@@ -162,10 +171,9 @@ def main():
     cfg.DATA.NUM_WORKERS = 0
     cfg.freeze()
 
-    client = FlowerClient(local_epochs=cfg.SOLVER.ITER, cfg=cfg)
+    client = FedProxClient(local_epochs=cfg.SOLVER.ITER, cfg=cfg)
 
-    fl.client.start_client(server_address="0.0.0.0:9090",
-                           client=client.to_client())
+    fl.client.start_client(server_address="0.0.0.0:9090", client=client.to_client())
 
 
 if __name__ == "__main__":

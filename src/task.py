@@ -28,15 +28,15 @@ def federatedTrain(
     cfg: CfgNode,
     model: nn.Module,
     train_loader: DataLoader,
-    num_epochs=1,
+    num_epochs=1, #CAN CHANGE WHEN NECESSARY
+    proximal_mu=0.0,
+    global_model_weights=None,
 ):
-    """Run a local training loop for FL client with logging."""
-    if model is None:
-        model = Build_Model(cfg)
-    if train_loader is None:
-        train_loader = unified_loader(cfg, rand=True, split="train")
+    model.to(DEVICE)
+    model.train()
 
     print(f"[Client] Start local training for {num_epochs} epoch(s)")
+
     for epoch in range(num_epochs):
         loss_list = []
         pbar = tqdm(
@@ -53,7 +53,10 @@ def federatedTrain(
                 )
                 for k in data_dict
             }
-            loss_info = model.update(data_dict)
+            if proximal_mu > 0:
+                loss_info = model.update_with_mu_values(data_dict, proximal_mu, global_model_weights)
+            else:
+                loss_info = model.update(data_dict)
             loss_list.append(loss_info)
             pbar.set_postfix({k: f"{v:.4f}" for k, v in loss_info.items()})
 

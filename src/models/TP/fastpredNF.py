@@ -203,6 +203,55 @@ class fastpredNF_TP(nn.Module):
 
         return {'loss': loss.mean().item()}
 
+    def update_with_mu_values(self, data_dict: Dict, proximal_mu, global_model_weights) -> Dict: #CAN CHANGE
+        dist_args = self.encoder(data_dict)
+
+        gt = data_dict['gt_st']
+        if self.dequantize:
+            gt += torch.rand_like(data_dict['gt_st']) / 100
+
+        base_pos = self.get_base_pos(data_dict)
+
+        loss = -self.flow.log_prob(base_pos, gt, dist_args)
+        loss = loss.mean()
+
+        final_loss = loss
+        proximal_term_value = 0.0
+
+        if proximal_mu > 0 and global_model_weights is not None:
+            proximal_term = 0.0
+            # Iterate over current local model parameters and global model parameters
+            # global_model_weights was created from model.parameters(), so the order should match
+            for local_param, global_param_for_prox in zip(self.parameters(), global_model_weights):
+                if local_param.requires_grad: # Only consider trainable parameters
+                    # Ensure global_param_for_prox is on the same device as local_param
+                    # (It should be if created correctly in FedProxClient.fit)
+                    proximal_term += (local_param - global_param_for_prox.to(local_param.device)).norm(2).pow(2)
+            
+            # Add the scaled proximal term to the local loss
+            final_loss  = loss + (proximal_mu / 2.0) * proximal_term
+            
+            if isinstance(proximal_term, torch.Tensor): # Store for logging
+                proximal_term_value = proximal_term.item()
+            else: # if proximal_term remained a float (e.g. if loop didn't run)
+                proximal_term_value = proximal_term
+
+
+        self.optimizer.zero_grad()
+        final_loss.backward()
+        self.optimizer.step()
+
+        # The 'loss' key here should represent the loss value that was backpropagated.
+        return_info = {'loss': final_loss.item()} # Use .item() to get a Python number
+        
+        # Optionally, add local_loss and proximal_term_value for more detailed logging if desired
+        return_info['local_loss'] = loss.item()
+        if proximal_mu > 0:
+            return_info['proximal_term_value'] = proximal_term_value
+            
+        return return_info
+
+
     def get_base_pos(self, data_dict: Dict) -> torch.Tensor:
         # assume x_st contains {'position', 'velocity', 'acceleration'} info
         if self.pred_state == 'state_p':

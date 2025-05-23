@@ -1,4 +1,66 @@
-  File "/home/user/Documents/flowchain-implementation/src/fedcmb_server.py", line 30
-    print(f"\n[Server - FedCMB] Round {server_round} - Client Evaluation Results:")
-                                                                                   ^
-IndentationError: unindent does not match any outer indentation level
+[93mWARNING [0m:   DEPRECATED FEATURE: flwr.server.start_server() is deprecated.
+	Instead, use the `flower-superlink` CLI command to start a SuperLink as shown below:
+
+		$ flower-superlink --insecure
+
+	To view usage and all available options, run:
+
+		$ flower-superlink --help
+
+	Using `start_server()` is deprecated.
+
+            This is a deprecated feature. It will be removed
+            entirely in future versions of Flower.
+        
+[92mINFO [0m:      Starting Flower server, config: num_rounds=10, no round_timeout
+[92mINFO [0m:      Flower ECE: gRPC server running (10 rounds), SSL is disabled
+[92mINFO [0m:      [INIT]
+[92mINFO [0m:      Requesting initial parameters from one random client
+Traceback (most recent call last):
+  File "/home/user/Documents/flowchain-implementation/src/fedprox_server_app.py", line 90, in <module>
+    main()
+  File "/home/user/Documents/flowchain-implementation/src/fedprox_server_app.py", line 82, in main
+    fl.server.start_server(
+  File "/home/user/.pyenv/versions/flowchain-implementation/lib/python3.12/site-packages/flwr/server/app.py", line 255, in start_server
+    hist = run_fl(
+           ^^^^^^^
+  File "/home/user/.pyenv/versions/flowchain-implementation/lib/python3.12/site-packages/flwr/server/server.py", line 492, in run_fl
+    hist, elapsed_time = server.fit(
+                         ^^^^^^^^^^^
+  File "/home/user/.pyenv/versions/flowchain-implementation/lib/python3.12/site-packages/flwr/server/server.py", line 93, in fit
+    self.parameters = self._get_initial_parameters(server_round=0, timeout=timeout)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/.pyenv/versions/flowchain-implementation/lib/python3.12/site-packages/flwr/server/server.py", line 282, in _get_initial_parameters
+    random_client = self._client_manager.sample(1)[0]
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/.pyenv/versions/flowchain-implementation/lib/python3.12/site-packages/flwr/server/client_manager.py", line 189, in sample
+    self.wait_for(min_num_clients)
+  File "/home/user/.pyenv/versions/flowchain-implementation/lib/python3.12/site-packages/flwr/server/client_manager.py", line 134, in wait_for
+    return self._cv.wait_for(
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/user/.pyenv/versions/3.12.10/lib/python3.12/threading.py", line 390, in wait_for
+    self.wait(waittime)
+  File "/home/user/.pyenv/versions/3.12.10/lib/python3.12/threading.py", line 359, in wait
+    gotit = waiter.acquire(True, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/.pyenv/versions/flowchain-implementation/lib/python3.12/site-packages/flwr/common/exit_handlers.py", line 80, in graceful_exit_handler
+    flwr_exit(
+  File "/home/user/.pyenv/versions/flowchain-implementation/lib/python3.12/site-packages/flwr/common/exit/exit.py", line 75, in flwr_exit
+    event(event_type, event_details).result()
+  File "/home/user/.pyenv/versions/3.12.10/lib/python3.12/concurrent/futures/_base.py", line 451, in result
+    self._condition.wait(timeout)
+  File "/home/user/.pyenv/versions/3.12.10/lib/python3.12/threading.py", line 355, in wait
+    waiter.acquire()
+KeyboardInterrupt
+Exception ignored in: <module 'threading' from '/home/user/.pyenv/versions/3.12.10/lib/python3.12/threading.py'>
+Traceback (most recent call last):
+  File "/home/user/.pyenv/versions/3.12.10/lib/python3.12/threading.py", line 1594, in _shutdown
+    atexit_call()
+  File "/home/user/.pyenv/versions/3.12.10/lib/python3.12/concurrent/futures/thread.py", line 31, in _python_exit
+    t.join()
+  File "/home/user/.pyenv/versions/3.12.10/lib/python3.12/threading.py", line 1149, in join
+    self._wait_for_tstate_lock()
+  File "/home/user/.pyenv/versions/3.12.10/lib/python3.12/threading.py", line 1169, in _wait_for_tstate_lock
+    if lock.acquire(block, timeout):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt: 

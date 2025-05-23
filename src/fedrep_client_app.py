@@ -83,7 +83,7 @@ class FedRepClient(NumPyClient):
     def fit(self, parameters, config):
         self.set_parameters(parameters)
         server_round = config.get("current_round")
-        results = federatedTrain(
+        loss = federatedTrain(
             cfg=self.cfg,
             model=self.net,
             train_loader=self.trainloader,
@@ -93,7 +93,7 @@ class FedRepClient(NumPyClient):
         )
         ade = metrics.get("ade", 0.0)
         fde = metrics.get("fde", 0.0)
-        metrics["loss"] = results
+        metrics["loss"] = loss
         metrics["score"] = ade
         print(
             f"[FedRep Fit Client] Round {server_round} - ADE: {ade:.4f}, FDE: {

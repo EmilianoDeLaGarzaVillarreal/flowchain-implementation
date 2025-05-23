@@ -42,6 +42,9 @@ pip install -r requirements.txt
 ## How to Run
 
 You can simulate federated training with four clients using different scenes as local data.
+Before Running you will need to process the data.
+
+`python src/data/TP/process_data.py`
 
 ### 1. FedAvg (10 Rounds)
 
@@ -54,34 +57,49 @@ python src/client_app.py --partition_id 0 --gpu 0 --config_file config/TP/FlowCh
 python src/client_app.py --partition_id 1 --gpu 0 --config_file config/TP/FlowChain/zara1.yml --data_fraction 1.0 > client2-FedAvg.txt 2>&1
 python src/client_app.py --partition_id 2 --gpu 0 --config_file config/TP/FlowChain/zara2.yml --data_fraction 1.0 > client3-FedAvg.txt 2>&1
 python src/client_app.py --partition_id 3 --gpu 0 --config_file config/TP/FlowChain/eth.yml --data_fraction 1.0 > client4-FedAvg.txt 2>&1
-python src/client_app.py --partition_id 4 --gpu 0 --config_file config/TP/FlowChain/mot.yml --data_fraction 1.0 --visualize > client5-FedAvg.txt 2>&1
+python src/client_app.py --partition_id 4 --gpu 0 --config_file config/TP/FlowChain/mot.yml --data_fraction 1.0 > client5-FedAvg.txt 2>&1
 ```
 
 ### 2. FedCMB (10 Rounds)
 
 ```bash
 # Server
-python src/server_fedcmb.py --num_rounds 10 > server-log-FedCMB.txt 2>&1
+python src/fedcmb_server.py --num_rounds 10 > server-log-FedCMB.txt 2>&1
 
 # Clients (Same as FedAvg)
-python src/client.py --config_file config/TP/FlowChain/hotel.yml --data_fraction 1.0 > client1-FedCMB.txt 2>&1
-python src/client.py --config_file config/TP/FlowChain/zara1.yml --data_fraction 1.0 > client2-FedCMB.txt 2>&1
-python src/client.py --config_file config/TP/FlowChain/zara2.yml --data_fraction 1.0 > client3-FedCMB.txt 2>&1
-python src/client.py --config_file config/TP/FlowChain/eth.yml --data_fraction 1.0 > client4-FedCMB.txt 2>&1
+python src/fedcmb_client_app.py --partition_id 0 --gpu 0 --config_file config/TP/FlowChain/hotel.yml --data_fraction 1.0 > client1-FedCMB.txt 2>&1
+python src/fedcmb_client_app.py --partition_id 1 --gpu 0 --config_file config/TP/FlowChain/zara1.yml --data_fraction 1.0 > client2-FedCMB.txt 2>&1
+python src/fedcmb_client_app.py --partition_id 2 --gpu 0 --config_file config/TP/FlowChain/zara2.yml --data_fraction 1.0 > client3-FedCMB.txt 2>&1
+python src/fedcmb_client_app.py --partition_id 3 --gpu 0 --config_file config/TP/FlowChain/eth.yml --data_fraction 1.0 > client4-FedCMB.txt 2>&1
+python src/fedcmb_client_app.py --partition_id 4 --gpu 0 --config_file config/TP/FlowChain/mot.yml --data_fraction 1.0 > client5-FedCMB.txt 2>&1
 ```
 
 ### 3. FedRep (10 Rounds)
 
 ```bash
 # Server
-python src/server_fedrep.py --num_rounds 10 > server-log-FedRep.txt 2>&1
+python src/fedrep_server.py --num_rounds 10 > server-log-FedRep.txt 2>&1
 
 # Clients
-python src/fedrep_client_app.py --partition_id 0 --gpu 0 --config_file config/TP/FlowChain/hotel.yml --data_fraction 1.0 > client1-FedAvg.txt 2>&1
-python src/fedrep_client_app.py --partition_id 1 --gpu 0 --config_file config/TP/FlowChain/zara1.yml --data_fraction 1.0 > client2-FedAvg.txt 2>&1
-python src/fedrep_client_app.py --partition_id 2 --gpu 0 --config_file config/TP/FlowChain/zara2.yml --data_fraction 1.0 > client3-FedAvg.txt 2>&1
-python src/fedrep_client_app.py --partition_id 3 --gpu 0 --config_file config/TP/FlowChain/eth.yml --data_fraction 1.0 > client4-FedAvg.txt 2>&1
-python src/fedrep_client_app.py --partition_id 4 --gpu 0 --config_file config/TP/FlowChain/mot.yml --data_fraction 1.0 --visualize > client5-FedAvg.txt 2>&1
+python src/fedrep_client_app.py --partition_id 0 --gpu 0 --config_file config/TP/FlowChain/hotel.yml --data_fraction 1.0 > client1-FedRep.txt 2>&1
+python src/fedrep_client_app.py --partition_id 1 --gpu 0 --config_file config/TP/FlowChain/zara1.yml --data_fraction 1.0 > client2-FedRep.txt 2>&1
+python src/fedrep_client_app.py --partition_id 2 --gpu 0 --config_file config/TP/FlowChain/zara2.yml --data_fraction 1.0 > client3-FedRep.txt 2>&1
+python src/fedrep_client_app.py --partition_id 3 --gpu 0 --config_file config/TP/FlowChain/eth.yml --data_fraction 1.0 > client4-FedRep.txt 2>&1
+python src/fedrep_client_app.py --partition_id 4 --gpu 0 --config_file config/TP/FlowChain/mot.yml --data_fraction 1.0 > client5-FedAvg.txt 2>&1
+```
+
+### 3. FedRep (10 Rounds)
+
+```bash
+# Server
+python src/fedprox_server_app.py --num_rounds 10 --mu 0.1> server-log-FedProx.txt 2>&1
+
+# Clients
+python src/fedprox_client_app.py --partition_id 0 --gpu 0 --config_file config/TP/FlowChain/hotel.yml --data_fraction 1.0 > client1-FedProx.txt 2>&1
+python src/fedprox_client_app.py --partition_id 1 --gpu 0 --config_file config/TP/FlowChain/zara1.yml --data_fraction 1.0 > client2-FedProx.txt 2>&1
+python src/fedprox_client_app.py --partition_id 2 --gpu 0 --config_file config/TP/FlowChain/zara2.yml --data_fraction 1.0 > client3-FedProx.txt 2>&1
+python src/fedprox_client_app.py --partition_id 3 --gpu 0 --config_file config/TP/FlowChain/eth.yml --data_fraction 1.0 > client4-FedProx.txt 2>&1
+python src/fedprox_client_app.py --partition_id 4 --gpu 0 --config_file config/TP/FlowChain/mot.yml --data_fraction 1.0 > client5-FedProx.txt 2>&1
 ```
 
 ## Logs & Evaluation
@@ -102,6 +120,5 @@ This project is licensed under the **Creative Commons Attribution-NonCommercial 
 This is a research collaboration between the **University of Tennessee at Chattanooga (UTC)** and **DENSO Corporation**.
 
 See [LICENSE](./LICENSE) for full details.
-# flowchain-implementation
-# flowchain-implementation
+
 # flowchain-implementation
